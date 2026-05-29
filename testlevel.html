@@ -3,7 +3,7 @@
 <head> 
     <meta charset="UTF-8" />
     <title>Animation/Physics Tester</title>
-    <script src="https://cdn.jsdelivr.net/npm/phaser@4.1.0/dist/phaser.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.9.0/dist/phaser.js"></script>
     <style type="text/css">
         body {
             margin: 0;
@@ -52,7 +52,7 @@
         this.load.image('ground', 'assets/platform.png');
         this.load.image('star', 'assets/star.png');
         this.load.image('bomb', 'assets/bomb.png');
-        this.load.spritesheet('kasey', 'assets/kaseyspritesheet.png', { frameWidth: 64, frameHeight: 64});
+        this.load.spritesheet('kasey', 'assets/nkspritesheet.png', { frameWidth: 64, frameHeight: 64});
         
     }
 
@@ -77,35 +77,47 @@
         player.body.setSize(34, 50);
         player.body.setOffset(15, 8);
 
-this.anims.create({
-    key: 'idle',
-    frames: this.anims.generateFrameNumbers('kasey', {
-        start: 0,
-        end: 5
-    }),
-    frameRate: 6,
-    repeat: -1
-});
+        this.anims.create({
+            key: 'idle',
+            frames: this.anims.generateFrameNumbers('kasey', {
+                start: 0,
+                end: 5
+            }),
+            frameRate: 6,
+            repeat: -1
+        });
 
-this.anims.create({
-    key: 'run',
-    frames: this.anims.generateFrameNumbers('kasey', {
-        start: 6,
-        end: 13
-    }),
-    frameRate: 12,
-    repeat: -1
-});
+        this.anims.create({
+            key: 'run',
+            frames: this.anims.generateFrameNumbers('kasey', {
+                start: 12,
+                end: 17
+            }),
+            frameRate: 12,
+            repeat: -1
+        });
 
-this.anims.create({
-    key: 'jump',
-    frames: this.anims.generateFrameNumbers('kasey', {
-        start: 15,
-        end: 19
-    }),
-    frameRate: 1,
-    repeat: 0
-});
+
+        this.anims.create({
+            key: 'jump_start',
+            frames: this.anims.generateFrameNumbers('kasey', {
+                start: 6,
+                end: 8,
+            }),
+            frameRate: 6,
+            repeat: 0
+        });
+
+        this.anims.create({
+            key: 'fall',
+            frames: this.anims.generateFrameNumbers('kasey', {
+                start: 9,
+                end: 11,
+            }),
+            frameRate: 1,
+            repeat: 0
+        });
+
 
 
         cursors = this.input.keyboard.createCursorKeys();
@@ -138,52 +150,62 @@ this.anims.create({
         this.physics.add.collider(player, bombs, hitBomb, null, this);
     }
 
-function update ()
-{
-    if (gameOver)
+    function update ()
     {
-        return;
-    }
-
-    var onGround = player.body.blocked.down || player.body.touching.down;
-
-    // Horizontal movement
-    if (cursors.left.isDown) {
-        player.setVelocityX(-160);
-        player.setFlipX(true);
-    }
-    else if (cursors.right.isDown) {
-        player.setVelocityX(160);
-        player.setFlipX(false);
-    }
-    else {
-        player.setVelocityX(0);
-    }
-
-    // Jump only when on ground
-    if (Phaser.Input.Keyboard.JustDown(cursors.up) && onGround) {
-        player.setVelocityY(-330);
-        player.anims.play('jump', true);
-        return;
-    }
-
-    // Do not overwrite jump animation while airborne
-    if (!onGround) {
-        return;
-    }
-
-    // Ground animations
-    if (cursors.left.isDown || cursors.right.isDown) {
-        if (player.anims.currentAnim?.key !== 'run') {
-            player.anims.play('run');
+        if (gameOver)
+        {
+            return;
         }
-    }
-    else {
-        if (player.anims.currentAnim?.key !== 'idle') {
-            player.anims.play('idle');
+        
+        var onGround = player.body.blocked.down || player.body.touching.down;
+
+        // Horizontal movement
+        if (cursors.left.isDown) {
+            player.setVelocityX(-160);
+            player.setFlipX(true);
         }
+        else if (cursors.right.isDown) {
+            player.setVelocityX(160);
+            player.setFlipX(false);
+        }
+        else {
+            player.setVelocityX(0);
+        }
+
+        // Jump only when on ground
+        if (Phaser.Input.Keyboard.JustDown(cursors.up) && onGround) {
+            player.setVelocityY(-330);
+            player.anims.play('jump_start', true);
+            return;
+        }
+
+        // Do not overwrite jump animation while airborne (change velocity values to stop animation on bounce)
+        if (!onGround) {
+            if (player.body.velocity.y < -75) {
+                if (player.anims.currentAnim?.key !== 'jump_start') {
+                    player.anims.play('jump_start');
+                }
+            } else if (player.body.velocity.y > 75) {
+                if (player.anims.currentAnim?.key !== 'fall') {
+                    player.anims.play('fall');
+                }
+            }
+            return;
+        }
+
+        // Ground animations
+        if (cursors.left.isDown || cursors.right.isDown) {
+            if (player.anims.currentAnim?.key !== 'run') {
+                player.anims.play('run');
+            }
+        }
+        else {
+            if (player.anims.currentAnim?.key !== 'idle') {
+                player.anims.play('idle');
+            }
+        }
+
     }
-}
     
     function collectStar (player, star)
     {
