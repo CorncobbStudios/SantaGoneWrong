@@ -7,20 +7,14 @@ const TILE_SIZE     = 32;
 const WORLD_HEIGHT  = 600;
 const WORLD_WIDTH   = TILE_SIZE * 80;
 const GROUND_Y      = WORLD_HEIGHT - TILE_SIZE;
-const tiles_grass = {};
-tiles_grass.GRASS_TOP1 = 0; 
-tiles_grass.GRASS_TOP2 = 4;
-tiles_grass.GRASS_TOP3 = 8;
-tiles_grass.GRASS_TOP4 = 12;
-const tiles_dirt = {};
-tiles_dirt.DIRT1 = 1;
-tiles_dirt.DIRT2 = 3;
-tiles_dirt.DIRT3 = 5;
-tiles_dirt.DIRT4 = 7;
-tiles_dirt.DIRT6 = 11;
-tiles_dirt.DIRT7 = 13;
-tiles_dirt.DIRT8 = 15;
+const grassTiles = [
+    'GRASS_TOP1', 'GRASS_TOP2', 'GRASS_TOP3', 'GRASS_TOP4'
+];
 
+const dirtTiles = [
+    'DIRT1', 'DIRT2', 'DIRT3', 'DIRT4',
+    'DIRT6', 'DIRT7', 'DIRT8'
+];
 
 export class Level1 extends GameLogic {
     constructor() {
@@ -68,19 +62,16 @@ export class Level1 extends GameLogic {
 
     createGround(length) {
         for (let x = TILE_SIZE; x < length-TILE_SIZE; x += TILE_SIZE) {
-            let keys = Object.keys(tiles_dirt);
-            const random_index = Math.floor(Math.random() * keys.length);
-            const random_key = keys[random_index];
-            let random_tile = tiles_dirt[random_key];
-            let dirt = this.tiles.createTile(x, GROUND_Y, random_tile, this.platforms);
+            const randomIndex = Math.floor(Math.random() * dirtTiles.length);
+            const randomDirt = dirtTiles[randomIndex];
+            let dirt = this.tiles.createTile(x, GROUND_Y, randomDirt, this.platforms);
             dirt.flipY = true;
         }
+
         for (let x = TILE_SIZE; x < length - TILE_SIZE; x += TILE_SIZE) {
-            let keys = Object.keys(tiles_grass);
-            const random_index = Math.floor(Math.random() * keys.length);
-            const random_key = keys[random_index];
-            let random_tile = tiles_grass[random_key];
-            this.tiles.createTile(x, GROUND_Y - TILE_SIZE, random_tile, this.platforms);
+            const randomIndex = Math.floor(Math.random() * grassTiles.length);
+            const randomGrass = grassTiles[randomIndex];
+            this.tiles.createTile(x, GROUND_Y - TILE_SIZE, randomGrass, this.platforms);
         }
         // creating the firt and last tile of the ground
 
@@ -96,7 +87,7 @@ export class Level1 extends GameLogic {
             this.tiles.createTile(
                 x,
                 GROUND_Y - TILE_SIZE * height,
-                tiles_grass.GRASS_TOP2,
+                'GRASS_TOP1',
                 this.platforms,
             );
         }
