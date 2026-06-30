@@ -7,9 +7,11 @@ export class NegativeKasey extends Phaser.Physics.Arcade.Sprite {
         scene.add.existing(this);
         scene.physics.add.existing(this);
 
-        this.speed = 90;
-        this.jumpPower = -330;
+        this.speed = 120;
+        this.acceleration = 30;
+        this.jumpPower = -280;
         this.detectionRange = 300;
+        this.delay = 500;
 
         this.setBounce(0.1);
         this.setCollideWorldBounds(true);
@@ -23,15 +25,13 @@ export class NegativeKasey extends Phaser.Physics.Arcade.Sprite {
     update(player) {
         if (!player || !this.body) return;
 
-        const onGround =
-            this.body.blocked.down ||
-            this.body.touching.down;
+        const onGround = this.body.blocked.down || this.body.touching.down;
 
         const distance = Phaser.Math.Distance.Between(
             this.x,
             this.y,
             player.x,
-            player.y
+            player.y,
         );
 
         if (distance < this.detectionRange) {
@@ -45,20 +45,22 @@ export class NegativeKasey extends Phaser.Physics.Arcade.Sprite {
 
     chasePlayer(player, onGround) {
         if (player.x < this.x) {
-            this.setVelocityX(-this.speed);
-            this.setFlipX(true);
+            this.scene.time.delayedCall(this.delay, () => {
+                this.setVelocityX(-this.speed);
+                this.setFlipX(true);
+            });
         } else {
-            this.setVelocityX(this.speed);
-            this.setFlipX(false);
+            this.scene.time.delayedCall(this.delay, () => {
+                this.setVelocityX(this.speed);
+                this.setFlipX(false);
+            });
         }
 
         // Jump if player is above Negative Kasey
         const playerIsAbove = player.y < this.y - 40;
 
         // Jump if enemy hits a wall while chasing
-        const blockedByWall =
-            this.body.blocked.left ||
-            this.body.blocked.right;
+        const blockedByWall = this.body.blocked.left || this.body.blocked.right;
 
         if (onGround && (playerIsAbove || blockedByWall)) {
             this.jump();
@@ -71,8 +73,10 @@ export class NegativeKasey extends Phaser.Physics.Arcade.Sprite {
     }
 
     jump() {
-        this.setVelocityY(this.jumpPower);
-        this.playAnimation('negative_jump');
+        this.scene.time.delayedCall(this.delay, () => {
+            this.setVelocityY(this.jumpPower);
+            this.playAnimation('negative_jump');
+        });
     }
 
     idle(onGround) {
@@ -88,8 +92,7 @@ export class NegativeKasey extends Phaser.Physics.Arcade.Sprite {
 
         if (this.body.velocity.y < -75) {
             this.playAnimation('negative_jump');
-        }
-        else if (this.body.velocity.y > 75) {
+        } else if (this.body.velocity.y > 75) {
             this.playAnimation('negative_fall');
         }
     }

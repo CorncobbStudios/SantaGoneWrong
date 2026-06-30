@@ -15,7 +15,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         this.jumpPower = -330;
         this.facing = 1;
 
-        this.setBounce(0.2);
+        this.setBounce(0);
         this.setCollideWorldBounds(true);
 
         // setting collision box
@@ -30,22 +30,18 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         if (!cursors) return;
 
         // checks if physics body is touching ground
-        const onGround =
-            this.body.blocked.down ||
-            this.body.touching.down;
+        const onGround = this.body.blocked.down || this.body.touching.down;
 
         // Movement
         if (cursors.left.isDown) {
             this.setVelocityX(-this.speed);
             this.setFlipX(true);
             this.facing = -1;
-        }
-        else if (cursors.right.isDown) {
+        } else if (cursors.right.isDown) {
             this.setVelocityX(this.speed);
             this.setFlipX(false);
             this.facing = 1;
-        }
-        else {
+        } else {
             this.setVelocityX(0);
         }
 
@@ -72,8 +68,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         // Ground animations
         if (cursors.left.isDown || cursors.right.isDown) {
             this.playAnimation('run');
-        }
-        else {
+        } else {
             this.playAnimation('idle');
         }
     }
@@ -83,15 +78,15 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         if (this.anims.currentAnim?.key === key) {
             return;
         }
-            this.play(key);
-        }
+        this.play(key);
+    }
 
     getThrowPosition() {
         const offsetX = this.facing === 1 ? 24 : -24;
 
         return {
             x: this.x + offsetX,
-            y: this.y - 18
+            y: this.y - 18,
         };
     }
 }
