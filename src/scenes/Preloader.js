@@ -22,7 +22,7 @@ export class Preloader extends Phaser.Scene {
         this.load.image('bomb', '/objects/bomb.png');
         this.load.image('disc', '/objects/discObject.png');
 
-        this.load.spritesheet('tiles', '/assets/tilesheet.png', {
+        this.load.spritesheet('tiles', '/assets/tiles.png', {
             frameWidth: 32,
             frameHeight: 32
         });

@@ -3,16 +3,23 @@ import { NegativeKasey } from '../../gameobjects/NegaKasey.js';
 import { createEnemyAnimations } from '../../utils/Animations.js';
 import TileFactory from '../../utils/TileFactory.js';
 
-const TILE_SIZE = 32;
-const WORLD_HEIGHT = 600;
-const WORLD_WIDTH = TILE_SIZE * 80;
-const GROUND_Y = WORLD_HEIGHT - TILE_SIZE;
-const GRASS_LEFT = 0;
-const GRASS_TOP1 = 1;
-const GRASS_TOP2 = 2;
-const GRASS_RIGHT = 3;
-const DIRT1 = 5;
-const DIRT2 = 6;
+const TILE_SIZE     = 32;
+const WORLD_HEIGHT  = 600;
+const WORLD_WIDTH   = TILE_SIZE * 80;
+const GROUND_Y      = WORLD_HEIGHT - TILE_SIZE;
+const tiles_grass = {};
+tiles_grass.GRASS_TOP1 = 0; 
+tiles_grass.GRASS_TOP2 = 4;
+tiles_grass.GRASS_TOP3 = 8;
+tiles_grass.GRASS_TOP4 = 12;
+const tiles_dirt = {};
+tiles_dirt.DIRT1 = 1;
+tiles_dirt.DIRT2 = 3;
+tiles_dirt.DIRT3 = 5;
+tiles_dirt.DIRT4 = 7;
+tiles_dirt.DIRT6 = 11;
+tiles_dirt.DIRT7 = 13;
+tiles_dirt.DIRT8 = 15;
 
 
 export class Level1 extends GameLogic {
@@ -44,12 +51,12 @@ export class Level1 extends GameLogic {
         this.physics.add.collider(this.player, this.platforms);
         createEnemyAnimations(this);
 
-        this.addNegaKasey(12, -1);
-        this.addNegaKasey(18, -1);
-        this.addNegaKasey(22, 0);
-        this.addNegaKasey(28, 10);
-        this.addNegaKasey(30, 0);
-        this.addNegaKasey(-3, 10);
+        //this.addNegaKasey(12, -1);
+        //this.addNegaKasey(18, -1);
+        //this.addNegaKasey(22, 0);
+        //this.addNegaKasey(28, 10);
+        //this.addNegaKasey(30, 0);
+        //this.addNegaKasey(-3, 10);
     }
 
     addNegaKasey(x, y) {
@@ -61,16 +68,23 @@ export class Level1 extends GameLogic {
 
     createGround(length) {
         for (let x = TILE_SIZE; x < length-TILE_SIZE; x += TILE_SIZE) {
-            this.tiles.createTile(x, GROUND_Y, DIRT1, this.platforms);
+            let keys = Object.keys(tiles_dirt);
+            const random_index = Math.floor(Math.random() * keys.length);
+            const random_key = keys[random_index];
+            let random_tile = tiles_dirt[random_key];
+            let dirt = this.tiles.createTile(x, GROUND_Y, random_tile, this.platforms);
+            dirt.flipY = true;
         }
-        for (let x = TILE_SIZE; x < length-TILE_SIZE; x += TILE_SIZE) {
-            this.tiles.createTile(x, GROUND_Y - TILE_SIZE, GRASS_TOP1, this.platforms);
+        for (let x = TILE_SIZE; x < length - TILE_SIZE; x += TILE_SIZE) {
+            let keys = Object.keys(tiles_grass);
+            const random_index = Math.floor(Math.random() * keys.length);
+            const random_key = keys[random_index];
+            let random_tile = tiles_grass[random_key];
+            this.tiles.createTile(x, GROUND_Y - TILE_SIZE, random_tile, this.platforms);
         }
         // creating the firt and last tile of the ground
-        this.tiles.createTile(0, GROUND_Y, DIRT1, this.platforms);
-        this.tiles.createTile(0, GROUND_Y - TILE_SIZE, GRASS_LEFT, this.platforms);
-        this.tiles.createTile(length-TILE_SIZE, GROUND_Y, DIRT1, this.platforms);
-        this.tiles.createTile(length-TILE_SIZE, GROUND_Y - TILE_SIZE, GRASS_RIGHT, this.platforms);
+
+
     }
 
     createPlatform(height, start, width) {
@@ -82,7 +96,7 @@ export class Level1 extends GameLogic {
             this.tiles.createTile(
                 x,
                 GROUND_Y - TILE_SIZE * height,
-                GRASS_TOP2,
+                tiles_grass.GRASS_TOP2,
                 this.platforms,
             );
         }

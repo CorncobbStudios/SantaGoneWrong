@@ -3,14 +3,26 @@ import { Player } from '../../gameobjects/Player.js';
 import { createPlayerAnimations } from '../../utils/Animations.js';
 import TileFactory from '../../utils/TileFactory.js';
 
-const GRASS_LEFT = 0;
-const GRASS_TOP1 = 1;
-const GRASS_TOP2 = 2;
-const GRASS_RIGHT = 3;
-const DIRT1 = 5;
-const DIRT2 = 6;
 const TILE_SIZE = 32;
-const GROUND_Y = 600 - TILE_SIZE;
+const WORLD_HEIGHT = 600;
+const WORLD_WIDTH = TILE_SIZE * 80;
+const GROUND_Y = WORLD_HEIGHT - TILE_SIZE;
+const GRASS_TOP1 = 0; 
+const DIRT1 = 1;
+const GRASS_EDGE1 = 2;
+const DIRT2 = 3;
+const GRASS_TOP2 = 4;
+const DIRT3 = 5;
+const GRASS_LEFT = 6;
+const DIRT4 = 7;
+const GRASS_TOP3 = 8;
+const DIRT5 = 9;
+const GRASS_RIGHT = 10;
+const DIRT6 = 11;
+const GRASS_TOP4 = 12;
+const DIRT7 = 13;
+const GRASS_RIGHT2 = 14;
+const DIRT8 = 15;
 
 export class GameLogic extends Scene {
     init() {
