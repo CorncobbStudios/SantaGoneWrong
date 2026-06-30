@@ -8,7 +8,6 @@ export class NegativeKasey extends Phaser.Physics.Arcade.Sprite {
         scene.physics.add.existing(this);
 
         this.speed = 120;
-        this.acceleration = 30;
         this.jumpPower = -280;
         this.detectionRange = 300;
         this.delay = 500;
