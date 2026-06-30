@@ -1,10 +1,14 @@
 import * as Phaser from 'phaser';
 
 export class Player extends Phaser.Physics.Arcade.Sprite {
+    // x and y are player starting position
     constructor(scene, x, y) {
+        // this is using texture of the sprite
         super(scene, x, y, 'kasey');
 
+        // draws the sprite to the scene
         scene.add.existing(this);
+        // adds arcade physics to the sprite
         scene.physics.add.existing(this);
 
         this.speed = 160;
@@ -14,8 +18,10 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         this.setBounce(0.2);
         this.setCollideWorldBounds(true);
 
-        this.body.setSize(34, 50);
-        this.body.setOffset(15, 8);
+        // setting collision box
+        this.body.setSize(42, 60);
+        // change to offset collision box
+        //this.body.setOffset(15, 0);
 
         this.play('idle');
     }
@@ -23,6 +29,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     update(cursors) {
         if (!cursors) return;
 
+        // checks if physics body is touching ground
         const onGround =
             this.body.blocked.down ||
             this.body.touching.down;
@@ -51,13 +58,14 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
         // Air animations
         if (!onGround) {
+            // if player is going up
             if (this.body.velocity.y < -75) {
                 this.playAnimation('jump_start');
             }
+            // if player is going down
             else if (this.body.velocity.y > 75) {
                 this.playAnimation('fall');
             }
-
             return;
         }
 
@@ -71,10 +79,12 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     playAnimation(key) {
-        if (this.anims.currentAnim?.key !== key) {
+        // checks to see if we are already playing the current animation
+        if (this.anims.currentAnim?.key === key) {
+            return;
+        }
             this.play(key);
         }
-    }
 
     getThrowPosition() {
         const offsetX = this.facing === 1 ? 24 : -24;

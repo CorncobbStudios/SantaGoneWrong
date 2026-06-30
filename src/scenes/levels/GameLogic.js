@@ -1,6 +1,6 @@
 import { Scene } from 'phaser';
 import { Player } from '../../gameobjects/Player.js';
-import { createPlayerAnimations } from '../../utils/animations.js';
+import { createPlayerAnimations } from '../../utils/Animations.js';
 
 export class GameLogic extends Scene {
     init() {

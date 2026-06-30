@@ -1,6 +1,6 @@
 import { AUTO, Scale } from 'phaser';
 import { Boot } from './scenes/Boot.js';
-import { Preloader } from './Preloader.js';
+import { Preloader } from './scenes/Preloader.js';
 import { MainMenu } from './scenes/MainMenu.js';
 import { GameOver } from './scenes/GameOver.js';
 import { Level1 } from './scenes/levels/Level1.js';
