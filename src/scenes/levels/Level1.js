@@ -3,14 +3,17 @@ import { NegativeKasey } from '../../gameobjects/NegaKasey.js';
 import { createEnemyAnimations } from '../../utils/Animations.js';
 import TileFactory from '../../utils/TileFactory.js';
 
+const TILE_SIZE = 32;
+const WORLD_HEIGHT = 600;
+const WORLD_WIDTH = TILE_SIZE * 80;
+const GROUND_Y = WORLD_HEIGHT - TILE_SIZE;
 const GRASS_LEFT = 0;
 const GRASS_TOP1 = 1;
 const GRASS_TOP2 = 2;
 const GRASS_RIGHT = 3;
 const DIRT1 = 5;
 const DIRT2 = 6;
-const TILE_SIZE = 32;
-const GROUND_Y = 600 - TILE_SIZE;
+
 
 export class Level1 extends GameLogic {
     constructor() {
@@ -18,13 +21,13 @@ export class Level1 extends GameLogic {
     }
 
     create() {
-        this.physics.world.setBounds(0, 0, 3000, 600);
-        this.cameras.main.setBounds(0, 0, 3000, 600);
+        this.physics.world.setBounds(0, 0, WORLD_WIDTH, WORLD_HEIGHT);
+        this.cameras.main.setBounds(0, 0, WORLD_WIDTH, WORLD_HEIGHT);
 
-        this.background = this.add.tileSprite(0, 0, 3000, 600, 'sky');
+        this.background = this.add.tileSprite(0, 0, WORLD_WIDTH, WORLD_HEIGHT, 'sky');
         this.background.setOrigin(0, 0);
 
-        this.createGround(3000);
+        this.createGround(WORLD_WIDTH);
         this.createPlatform(5, 10, 5);
         this.createPlatform(7, 17, 1);
         this.createPlatform(4, 21, 4);
@@ -32,7 +35,6 @@ export class Level1 extends GameLogic {
         this.createPlatform(6, 28, 2);
         this.createPlatform(6, 31, 3);
         this.createPlatform(6, 31, 3);
-        this.createPlatform(-3, 0, 3000);
 
         //this.tiles.createTile(0, GROUND_Y - 32, GRASS_LEFT, this.platforms);
 
@@ -58,12 +60,17 @@ export class Level1 extends GameLogic {
     }
 
     createGround(length) {
-        for (let x = 0; x < length - TILE_SIZE; x += TILE_SIZE) {
+        for (let x = TILE_SIZE; x < length-TILE_SIZE; x += TILE_SIZE) {
             this.tiles.createTile(x, GROUND_Y, DIRT1, this.platforms);
         }
-        for (let x = 0; x < length - TILE_SIZE; x += TILE_SIZE) {
-            this.tiles.createTile(x, GROUND_Y - 32, GRASS_TOP1, this.platforms);
+        for (let x = TILE_SIZE; x < length-TILE_SIZE; x += TILE_SIZE) {
+            this.tiles.createTile(x, GROUND_Y - TILE_SIZE, GRASS_TOP1, this.platforms);
         }
+        // creating the firt and last tile of the ground
+        this.tiles.createTile(0, GROUND_Y, DIRT1, this.platforms);
+        this.tiles.createTile(0, GROUND_Y - TILE_SIZE, GRASS_LEFT, this.platforms);
+        this.tiles.createTile(length-TILE_SIZE, GROUND_Y, DIRT1, this.platforms);
+        this.tiles.createTile(length-TILE_SIZE, GROUND_Y - TILE_SIZE, GRASS_RIGHT, this.platforms);
     }
 
     createPlatform(height, start, width) {
