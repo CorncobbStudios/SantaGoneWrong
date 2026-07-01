@@ -1,6 +1,8 @@
+import * as Phaser from 'phaser';
 import { Scene } from 'phaser';
 import { Player } from '../../gameobjects/Player.js';
 import { createPlayerAnimations } from '../../utils/Animations.js';
+import { Disc } from '../../gameobjects/Disc.js';
 import TileFactory from '../../utils/TileFactory.js';
 
 const TILE_SIZE = 32;
@@ -15,12 +17,14 @@ export class GameLogic extends Scene {
         this.enemies = [];
         this.platforms = this.physics.add.staticGroup();
         this.tiles = new TileFactory(this);
+        this.discs = null;
     }
 
     createPlayer(x, y) {
         createPlayerAnimations(this);
         this.player = new Player(this, x, y);
         this.cursors = this.input.keyboard.createCursorKeys();
+        this.attackKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
         return this.player;
     }
 
@@ -33,6 +37,9 @@ export class GameLogic extends Scene {
     updatePlayer() {
         if (!this.player || !this.cursors) return;
         this.player.update(this.cursors);
+        if (Phaser.Input.Keyboard.JustDown(this.attackKey)){
+            this.player.throwDisc();
+        }
     }
 
     updateEnemies() {
@@ -40,4 +47,21 @@ export class GameLogic extends Scene {
             enemy.update(this.player);
         }
     }
+
+    createDisc(pos, direction) {
+        const disc = new Disc(
+            this,
+            pos.x,
+            pos.y,
+            direction
+        );
+        this.discs.add(disc);
+        return disc;
+    }
+
+    onDiscHitEnemy(disc, enemy) {
+        enemy.takeDamage(1);
+        disc.destroy();
+    }
+
 }
