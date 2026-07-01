@@ -6,6 +6,7 @@ export class NegativeKasey extends Phaser.Physics.Arcade.Sprite {
 
         scene.add.existing(this);
         scene.physics.add.existing(this);
+        this.health = 3;
 
         this.speed = 120;
         this.jumpPower = -280;
@@ -19,6 +20,8 @@ export class NegativeKasey extends Phaser.Physics.Arcade.Sprite {
         this.body.setOffset(15, 8);
 
         this.play('negative_idle');
+        this.moveTimer = null;
+        this.jumpTimer = null;
     }
 
     update(player) {
@@ -44,12 +47,14 @@ export class NegativeKasey extends Phaser.Physics.Arcade.Sprite {
 
     chasePlayer(player, onGround) {
         if (player.x < this.x) {
-            this.scene.time.delayedCall(this.delay, () => {
+            this.moveTimer = this.scene.time.delayedCall(this.delay, () => {
+                if (!this.body) return;
                 this.setVelocityX(-this.speed);
                 this.setFlipX(true);
             });
         } else {
-            this.scene.time.delayedCall(this.delay, () => {
+            this.moveTimer = this.scene.time.delayedCall(this.delay, () => {
+                if (!this.body) return;
                 this.setVelocityX(this.speed);
                 this.setFlipX(false);
             });
@@ -72,7 +77,8 @@ export class NegativeKasey extends Phaser.Physics.Arcade.Sprite {
     }
 
     jump() {
-        this.scene.time.delayedCall(this.delay, () => {
+        this.jumpTimer = this.scene.time.delayedCall(this.delay, () => {
+            if (!this.body) return;
             this.setVelocityY(this.jumpPower);
             this.playAnimation('negative_jump');
         });
@@ -100,5 +106,27 @@ export class NegativeKasey extends Phaser.Physics.Arcade.Sprite {
         if (this.anims.currentAnim?.key !== key) {
             this.play(key);
         }
+    }
+
+    takeDamage(amount) {
+        this.health -= amount;
+        this.setTint(0xff0000);
+        this.scene.time.delayedCall(100, () => {
+            this.clearTint();
+        });
+        if (this.health <=0 ){
+            this.die();
+        }
+    }
+    die(){
+        //particle
+        //score
+        if (this.moveTimer){
+            this.moveTimer.remove();
+        }
+        if (this.jumpTimer){
+            this.jumpTimer.remove();
+        }
+        this.destroy();
     }
 }

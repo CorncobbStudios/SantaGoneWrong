@@ -41,6 +41,7 @@ export class Level1 extends GameLogic {
         //this.tiles.createTile(0, GROUND_Y - 32, GRASS_LEFT, this.platforms);
 
         this.createPlayer(100, 450);
+        this.createDiscGroup();
         this.cameras.main.startFollow(this.player);
 
         this.physics.add.collider(this.player, this.platforms);
@@ -53,18 +54,6 @@ export class Level1 extends GameLogic {
         //this.addNegaKasey(28, 10);
         //this.addNegaKasey(30, 0);
         //this.addNegaKasey(-3, 10);
-        
-
-
-
-        this.discs = this.physics.add.group();
-        this.physics.add.overlap(
-            this.discs,
-            this.enemies,
-            this.onDiscHitEnemy,
-            null,
-            this
-        );
     }
 
     addNegaKasey(x, y) {
