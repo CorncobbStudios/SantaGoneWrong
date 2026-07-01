@@ -29,12 +29,10 @@ export class GameLogic extends Scene {
     }
 
     addEnemy(enemy, onPlayerHit) {
-        console.log('discs group:', this.discs);
         this.enemies.push(enemy);
         this.physics.add.collider(enemy, this.platforms);
         this.physics.add.collider(this.player, enemy, onPlayerHit, null, this);
         this.physics.add.overlap(enemy, this.discs, this.onDiscHitEnemy, null, this);
-        console.log('overlap created');
     }
 
     updatePlayer() {
@@ -60,7 +58,6 @@ export class GameLogic extends Scene {
         );
         this.discs.add(disc);
         disc.body.setAllowGravity(false);
-        disc.body.setVelocityX(direction * 300);
   
         for (const enemy of this.enemies) {
             this.physics.add.overlap(
@@ -75,14 +72,13 @@ export class GameLogic extends Scene {
         return disc;
     }
 
-
     createDiscGroup(){
-        this.discs = this.physics.add.group({allowGravity: false});
+        this.discs = this.physics.add.group();
     }
 
     onDiscHitEnemy(enemy, disc) {
-        console.log('hit');
         enemy.takeDamage(1);
+        console.log(enemy.isStunned);
         disc.destroy();
     }
 

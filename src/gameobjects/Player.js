@@ -107,11 +107,11 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     getThrowPosition() {
-        const offsetX = this.facing === 1 ? 24 : -24;
+        const offsetX = this.facing === 1 ? 50 : -50;
 
         return {
             x: this.x + offsetX,
-            y: this.y - 18,
+            y: this.y,
         };
     }
 
