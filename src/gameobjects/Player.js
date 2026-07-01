@@ -1,4 +1,5 @@
 import * as Phaser from 'phaser';
+import { Disc } from './Disc';
 
 export class Player extends Phaser.Physics.Arcade.Sprite {
     // x and y are player starting position
@@ -14,6 +15,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         this.speed = 160;
         this.jumpPower = -330;
         this.facing = 1;
+        this.attackCooldown = 0;
+        this.isAttacking = false;
 
         this.setBounce(0);
         this.setCollideWorldBounds(true);
@@ -24,9 +27,27 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         //this.body.setOffset(15, 0);
 
         this.play('idle');
+
+        this.on('animationupdate', (anim, frame) => {
+            if (anim.key === 'throw' && frame.index === 4) {
+                const pos = this.getThrowPosition();
+                this.scene.createDisc( pos, this.facing);
+            }
+        });
+
+        this.on('animationcomplete-throw', (anim) => {
+            if (anim.key === 'throw'){
+                this.anims.stop();
+                this.isAttacking = false;
+                this.play('idle', true);
+            }
+        });
     }
 
     update(cursors) {
+        if (this.attackCooldown > 0){
+            this.attackCooldown--;
+        }
         if (!cursors) return;
 
         // checks if physics body is touching ground
@@ -65,12 +86,16 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
             return;
         }
 
+        if (this.isAttacking){
+            return;
+        }
         // Ground animations
         if (cursors.left.isDown || cursors.right.isDown) {
             this.playAnimation('run');
         } else {
             this.playAnimation('idle');
         }
+
     }
 
     playAnimation(key) {
@@ -89,4 +114,16 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
             y: this.y - 18,
         };
     }
+
+    throwDisc() {
+        if (this.attackCooldown > 0 || this.isAttacking) {
+            return;
+        }
+
+        this.isAttacking = true;
+        this.attackCooldown = 30;
+
+        this.play('throw', true);
+    }
+
 }

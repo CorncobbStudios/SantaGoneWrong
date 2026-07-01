@@ -42,6 +42,18 @@ export function createPlayerAnimations(scene){
         frameRate: 1,
         repeat: 0
     });}
+
+    if (!scene.anims.exists('throw')){
+        scene.anims.create({
+            key: 'throw',
+            frames: scene.anims.generateFrameNumbers('kasey', {
+                start: 18,
+                end: 23,
+            }),
+            frameRate: 10,
+            repeat: 0
+        });
+    }
 }
 
         
