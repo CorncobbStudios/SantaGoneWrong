@@ -26,6 +26,10 @@ export class NegativeKasey extends Phaser.Physics.Arcade.Sprite {
 
     update(player) {
         if (!player || !this.body) return;
+        if (this.isStunned){
+            this.setVelocity(0);
+            return
+        };
 
         const onGround = this.body.blocked.down || this.body.touching.down;
 
@@ -47,17 +51,21 @@ export class NegativeKasey extends Phaser.Physics.Arcade.Sprite {
 
     chasePlayer(player, onGround) {
         if (player.x < this.x) {
+            if (!this.moveTimer || this.moveTimer.hasDispatched){
             this.moveTimer = this.scene.time.delayedCall(this.delay, () => {
-                if (!this.body) return;
+                if (!this.body ) return;
                 this.setVelocityX(-this.speed);
                 this.setFlipX(true);
             });
+        }
         } else {
+            if(!this.moveTimer || this.moveTimer.hasDispatched){
             this.moveTimer = this.scene.time.delayedCall(this.delay, () => {
                 if (!this.body) return;
                 this.setVelocityX(this.speed);
                 this.setFlipX(false);
             });
+            }
         }
 
         // Jump if player is above Negative Kasey
@@ -77,11 +85,13 @@ export class NegativeKasey extends Phaser.Physics.Arcade.Sprite {
     }
 
     jump() {
+        if (!this.jumpTimer || this.jumpTimer.hasDispatched){
         this.jumpTimer = this.scene.time.delayedCall(this.delay, () => {
             if (!this.body) return;
             this.setVelocityY(this.jumpPower);
             this.playAnimation('negative_jump');
         });
+        }
     }
 
     idle(onGround) {
@@ -108,10 +118,34 @@ export class NegativeKasey extends Phaser.Physics.Arcade.Sprite {
         }
     }
 
+    stun(duration){
+        if (this.isStunned){
+            return;
+        }
+        this.isStunned = true;
+        this.anims.play('idle')
+        this.setVelocity(0);
+
+        if (this.moveTimer){
+            this.moveTimer.remove();
+            this.moveTimer = null;
+        }
+        if (this.jumpTimer){
+            this.jumpTimer.remove();
+            this.jumpTimer = null;
+        }
+
+        this.scene.time.delayedCall(duration, () =>{
+            if (!this.body) return;
+            this.isStunned = false;
+        });
+    }
+
     takeDamage(amount) {
+        this.stun(500);
         this.health -= amount;
         this.setTint(0xff0000);
-        this.scene.time.delayedCall(100, () => {
+        this.scene.time.delayedCall(200, () => {
             this.clearTint();
         });
         if (this.health <=0 ){
