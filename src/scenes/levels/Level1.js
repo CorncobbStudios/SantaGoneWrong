@@ -5,7 +5,7 @@ import TileFactory from '../../utils/TileFactory.js';
 
 const TILE_SIZE     = 32;
 const WORLD_HEIGHT  = 600;
-const WORLD_WIDTH   = TILE_SIZE * 80;
+const WORLD_WIDTH   = TILE_SIZE * 115;
 const GROUND_Y      = WORLD_HEIGHT - TILE_SIZE;
 const grassTiles = [
     'GRASS_TOP1', 'GRASS_TOP2', 'GRASS_TOP3', 'GRASS_TOP4'
@@ -25,8 +25,9 @@ export class Level1 extends GameLogic {
         this.physics.world.setBounds(0, 0, WORLD_WIDTH, WORLD_HEIGHT);
         this.cameras.main.setBounds(0, 0, WORLD_WIDTH, WORLD_HEIGHT);
 
-        this.background = this.add.tileSprite(0, 0, WORLD_WIDTH, WORLD_HEIGHT, 'sky');
-        this.background.setOrigin(0, 0);
+        this.bg = this.add.image(0,0,'mountfuji')
+        .setOrigin(0,0)
+        .setScrollFactor(0.1);
 
         this.createGround(WORLD_WIDTH);
         this.createPlatform(5, 10, 5);
@@ -46,7 +47,7 @@ export class Level1 extends GameLogic {
         createEnemyAnimations(this);
 
         //this.addNegaKasey(12, -1);
-        //this.addNegaKasey(18, -1);
+        this.addNegaKasey(18, -1);
         //this.addNegaKasey(22, 0);
         //this.addNegaKasey(28, 10);
         //this.addNegaKasey(30, 0);

@@ -15,9 +15,7 @@ export class Preloader extends Phaser.Scene {
 
     preload() {
         this.load.image('sky', '/assets/sky.png');
-
-        this.load.image('background', '/assets/bg.png');
-
+        this.load.image('mountfuji', '/assets/mountfuji2.png');        
         this.load.image('star', '/objects/star.png');
         this.load.image('bomb', '/objects/bomb.png');
         this.load.image('disc', '/objects/discObject.png');

@@ -18,7 +18,6 @@ export default class TileFactory {
 
     createTile(x, y, key, group) {
         const frame = this.tiles[key]
-        console.log(key,this.tiles[key]);
         const tile = this.scene.add.image(x, y, 'tiles', frame);
 
         tile.setOrigin(0, 0);
