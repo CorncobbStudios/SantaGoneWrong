@@ -19,9 +19,14 @@ export class Preloader extends Phaser.Scene {
         this.load.image('star', '/objects/star.png');
         this.load.image('bomb', '/objects/bomb.png');
         this.load.image('disc', '/objects/discObject.png');
-        this.load.image('demon', '/assets/demon.png');
-        this.load.image('volcano', '/assets/volcano.png');
+        this.load.image('demon', '/sprites/demon.png');
+        this.load.image('volcano', '/sprites/volcano.png');
         this.load.image('mainmenu', '/assets/mainmenu.png');
+
+        this.load.spritesheet('discSelect', '/assets/discSelector.png',{
+            frameWidth: 19,
+            frameHeight: 15
+        });
 
         this.load.spritesheet('tiles', '/assets/tiles.png', {
             frameWidth: 32,

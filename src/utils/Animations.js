@@ -101,4 +101,17 @@ export function createEnemyAnimations(scene){
             frameRate: 1,
             repeat: 0
         });}
-}
+    }
+
+    export function createDiscSelectAnimations(scene){
+        if (!scene.anims.exists('disc_select')){
+        scene.anims.create({
+            key: 'disc_select',
+            frames: scene.anims.generateFrameNumbers('discSelect', {
+                start: 1,
+                end: 6
+            }),
+            frameRate: 5,
+            repeat: -1
+        });}
+    }

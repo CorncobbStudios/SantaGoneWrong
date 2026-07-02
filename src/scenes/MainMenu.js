@@ -1,4 +1,5 @@
 import * as Phaser from 'phaser';
+import { createDiscSelectAnimations } from '../utils/Animations';
 
 export class MainMenu extends Phaser.Scene {
     constructor() {
@@ -7,6 +8,10 @@ export class MainMenu extends Phaser.Scene {
 
 
     create() {
+        createDiscSelectAnimations(this);
+        this.add.image(0,120, 'mainmenu')
+        .setOrigin(0)
+        .setScale(2.5);
 
         this.add.image(0, 120, 'mainmenu')
             .setOrigin(0)
@@ -18,6 +23,9 @@ export class MainMenu extends Phaser.Scene {
             'CONFIG',
             'QUIT'
         ];
+
+        this.cursorDisc = this.add.sprite('discObject', '/objects/discObject.png');
+        this.cursorDisc.play('disc_select');
 
         this.selected = 0;
         this.menuItems = [];
@@ -65,19 +73,26 @@ export class MainMenu extends Phaser.Scene {
         });
     }
 
+
     updateSelection() {
 
         this.menuItems.forEach((item, index) => {
-
-            if (index === this.selected) {
-                item.setText(`> ${this.options[index]}`);
-                item.setColor('#85c3db');
-            } else {
-                item.setText(`  ${this.options[index]}`);
-                item.setColor('#ffffff');
-            }
+            item.setColor(
+                index === this.selected
+                    ? '#85c3db'
+                    : '#ffffff'
+            );
         });
+
+        const selectedItem =
+            this.menuItems[this.selected];
+
+        this.cursorDisc.setPosition(
+            selectedItem.x - 20,
+            selectedItem.y + selectedItem.height / 2
+        );
     }
+
 
     selectOption() {
 
