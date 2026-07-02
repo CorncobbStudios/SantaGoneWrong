@@ -67,9 +67,14 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         }
 
         // Jump
-        if (Phaser.Input.Keyboard.JustDown(cursors.up) && onGround) {
+        if (Phaser.Input.Keyboard.JustDown(cursors.up) && onGround && !this.isAttacking) {
             this.setVelocityY(this.jumpPower);
             this.playAnimation('jump_start');
+            return;
+        }
+
+        // Don't override throw animation with any other animation
+        if (this.isAttacking) {
             return;
         }
 
@@ -86,9 +91,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
             return;
         }
 
-        if (this.isAttacking){
-            return;
-        }
         // Ground animations
         if (cursors.left.isDown || cursors.right.isDown) {
             this.playAnimation('run');
@@ -121,7 +123,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         }
 
         this.isAttacking = true;
-        this.attackCooldown = 30;
+        this.attackCooldown = 15;
 
         this.play('throw', true);
     }

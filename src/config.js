@@ -3,7 +3,10 @@ import { Boot } from './scenes/Boot.js';
 import { Preloader } from './scenes/Preloader.js';
 import { MainMenu } from './scenes/MainMenu.js';
 import { GameOver } from './scenes/GameOver.js';
+import { LevelSelect } from './scenes/LevelSelect.js';
 import { Level1 } from './scenes/levels/Level1.js';
+import { Level2 } from './scenes/levels/Level2.js';
+import { Level3 } from './scenes/levels/Level3.js';
 import * as Phaser from 'phaser';
 
 export const config = {
@@ -30,7 +33,10 @@ export const config = {
         Boot,
         Preloader,
         MainMenu,
+        LevelSelect,
         Level1,
+        Level2,
+        Level3,
         GameOver
     ]
 };

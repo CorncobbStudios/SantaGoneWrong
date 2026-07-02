@@ -2,7 +2,7 @@ import * as Phaser from 'phaser';
 
 export class NegativeKasey extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y) {
-        super(scene, x, y, 'negativeKasey');
+        super(scene, x, y, 'nk');
 
         scene.add.existing(this);
         scene.physics.add.existing(this);
@@ -10,7 +10,7 @@ export class NegativeKasey extends Phaser.Physics.Arcade.Sprite {
 
         this.speed = 120;
         this.jumpPower = -280;
-        this.detectionRange = 300;
+        this.detectionRange = 500;
         this.delay = 500;
 
         this.setBounce(0.1);
@@ -123,7 +123,7 @@ export class NegativeKasey extends Phaser.Physics.Arcade.Sprite {
             return;
         }
         this.isStunned = true;
-        this.anims.play('idle')
+        this.anims.play('negative_idle')
         this.setVelocity(0);
 
         if (this.moveTimer){

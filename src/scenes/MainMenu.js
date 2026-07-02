@@ -17,11 +17,11 @@ export class MainMenu extends Phaser.Scene {
         });
 
         this.input.once('pointerdown', () => {
-            this.scene.start('Level1');
+            this.scene.start('LevelSelect');
         });
 
         this.input.keyboard.once('keydown-SPACE', () => {
-            this.scene.start('Level1');
+            this.scene.start('LevelSelect');
         });
     }
 }
