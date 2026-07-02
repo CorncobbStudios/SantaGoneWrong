@@ -108,8 +108,8 @@ export function createEnemyAnimations(scene){
         scene.anims.create({
             key: 'disc_select',
             frames: scene.anims.generateFrameNumbers('discSelect', {
-                start: 1,
-                end: 6
+                start: 0,
+                end: 7
             }),
             frameRate: 5,
             repeat: -1

@@ -25,7 +25,7 @@ export class MainMenu extends Phaser.Scene {
         ];
 
         this.cursorDisc = this.add.sprite('discObject', '/objects/discObject.png');
-        this.cursorDisc.play('disc_select');
+        this.cursorDisc.play('disc_select').setScale(.65);
 
         this.selected = 0;
         this.menuItems = [];

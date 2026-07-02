@@ -24,8 +24,8 @@ export class Preloader extends Phaser.Scene {
         this.load.image('mainmenu', '/assets/mainmenu.png');
 
         this.load.spritesheet('discSelect', '/assets/discSelector.png',{
-            frameWidth: 19,
-            frameHeight: 15
+            frameWidth: 36,
+            frameHeight: 30
         });
 
         this.load.spritesheet('tiles', '/assets/tiles.png', {
