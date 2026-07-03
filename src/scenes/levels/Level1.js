@@ -29,8 +29,6 @@ export class Level1 extends GameLogic {
         this.createPlatform(6, 31, 3);
         this.createPlatform(6, 31, 3);
 
-        this.tiles.createTile(0, GROUND_Y - 32, GRASS_LEFT, this.platforms);
-
         this.createPlayer(100, 450);
         this.createDiscGroup();
         this.cameras.main.startFollow(this.player);
