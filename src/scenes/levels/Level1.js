@@ -1,20 +1,10 @@
 import { GameLogic } from './GameLogic.js';
 import { NegativeKasey } from '../../gameobjects/NegaKasey.js';
+import { Demon } from '../../gameobjects/Demon.js';
 import { createEnemyAnimations } from '../../utils/Animations.js';
-import TileFactory from '../../utils/TileFactory.js';
-
-const TILE_SIZE     = 32;
-const WORLD_HEIGHT  = 600;
-const WORLD_WIDTH   = TILE_SIZE * 115;
-const GROUND_Y      = WORLD_HEIGHT - TILE_SIZE;
-const grassTiles = [
-    'GRASS_TOP1', 'GRASS_TOP2', 'GRASS_TOP3', 'GRASS_TOP4'
-];
-
-const dirtTiles = [
-    'DIRT1', 'DIRT2', 'DIRT3', 'DIRT4',
-    'DIRT6', 'DIRT7', 'DIRT8'
-];
+const TILE_SIZE = 32;
+const WORLD_WIDTH = TILE_SIZE * 115;
+const GROUND_Y = 600 - TILE_SIZE;
 
 export class Level1 extends GameLogic {
     constructor() {
@@ -22,12 +12,13 @@ export class Level1 extends GameLogic {
     }
 
     create() {
-        this.physics.world.setBounds(0, 0, WORLD_WIDTH, WORLD_HEIGHT);
-        this.cameras.main.setBounds(0, 0, WORLD_WIDTH, WORLD_HEIGHT);
+        this.physics.world.setBounds(0, 0, WORLD_WIDTH, 600);
+        this.cameras.main.setBounds(0, 0, WORLD_WIDTH, 600);
 
-        this.bg = this.add.image(0,0,'mountfuji')
-        .setOrigin(0,0)
-        .setScrollFactor(0.1);
+        this.bg = this.add
+            .image(0, 0, 'mountfuji')
+            .setOrigin(0, 0)
+            .setScrollFactor(0.1);
 
         this.createGround(WORLD_WIDTH);
         this.createPlatform(5, 10, 5);
@@ -38,62 +29,41 @@ export class Level1 extends GameLogic {
         this.createPlatform(6, 31, 3);
         this.createPlatform(6, 31, 3);
 
-        //this.tiles.createTile(0, GROUND_Y - 32, GRASS_LEFT, this.platforms);
+        this.tiles.createTile(0, GROUND_Y - 32, GRASS_LEFT, this.platforms);
 
         this.createPlayer(100, 450);
         this.createDiscGroup();
         this.cameras.main.startFollow(this.player);
 
         this.physics.add.collider(this.player, this.platforms);
-    
+
         createEnemyAnimations(this);
-        this.physics.add.collider(this.enemies, this.platforms);
-        //this.addNegaKasey(12, -1);
-        this.addNegaKasey(18, -1);
-        //this.addNegaKasey(22, 0);
-        //this.addNegaKasey(28, 10);
-        //this.addNegaKasey(30, 0);
-        //this.addNegaKasey(-3, 10);
+        this.addNegaKasey(11, 5);
+        this.addNegaKasey(17, 7);
+        this.addNegaKasey(22, 4);
+        this.addNegaKasey(28, 10);
+        this.addNegaKasey(29, 6);
+        this.addNegaKasey(32, 6);
+
+        // Demons - fast chasers
+        this.addDemon(14, 5);
+
+        // Volcano
+        // this.addVolcano(25 * TILE_SIZE, GROUND_Y - TILE_SIZE * 2, this.hitEnemy);
     }
 
     addNegaKasey(x, y) {
         this.addEnemy(
             new NegativeKasey(this, x * TILE_SIZE, GROUND_Y - y * TILE_SIZE),
-            this.hitEnemy,
+            this.hitEnemy
         );
     }
 
-    createGround(length) {
-        for (let x = TILE_SIZE; x < length-TILE_SIZE; x += TILE_SIZE) {
-            const randomIndex = Math.floor(Math.random() * dirtTiles.length);
-            const randomDirt = dirtTiles[randomIndex];
-            let dirt = this.tiles.createTile(x, GROUND_Y, randomDirt, this.platforms);
-            dirt.flipY = true;
-        }
-
-        for (let x = TILE_SIZE; x < length - TILE_SIZE; x += TILE_SIZE) {
-            const randomIndex = Math.floor(Math.random() * grassTiles.length);
-            const randomGrass = grassTiles[randomIndex];
-            this.tiles.createTile(x, GROUND_Y - TILE_SIZE, randomGrass, this.platforms);
-        }
-        // creating the firt and last tile of the ground
-
-
-    }
-
-    createPlatform(height, start, width) {
-        for (
-            let x = TILE_SIZE * start;
-            x < TILE_SIZE * (start + width);
-            x += TILE_SIZE
-        ) {
-            this.tiles.createTile(
-                x,
-                GROUND_Y - TILE_SIZE * height,
-                'GRASS_TOP1',
-                this.platforms,
-            );
-        }
+    addDemon(x, y) {
+        this.addEnemy(
+            new Demon(this, x * TILE_SIZE, GROUND_Y - y * TILE_SIZE),
+            this.hitEnemy
+        );
     }
 
     update() {
@@ -101,6 +71,6 @@ export class Level1 extends GameLogic {
         this.updateEnemies();
     }
     hitEnemy(player, enemy) {
-        this.scene.start('GameOver');
+        this.scene.start('GameOver', { level: 'Level1' });
     }
 }

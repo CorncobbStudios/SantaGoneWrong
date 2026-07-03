@@ -3,6 +3,7 @@ import { Scene } from 'phaser';
 import { Player } from '../../gameobjects/Player.js';
 import { createPlayerAnimations } from '../../utils/Animations.js';
 import { Disc } from '../../gameobjects/Disc.js';
+import { Volcano } from '../../gameobjects/Volcano.js';
 import TileFactory from '../../utils/TileFactory.js';
 
 const TILE_SIZE = 32;
@@ -15,6 +16,7 @@ export class GameLogic extends Scene {
     init() {
         this.cameras.main.fadeIn(1000, 0, 0, 0);
         this.enemies = [];
+        this.volcanos = [];
         this.platforms = this.physics.add.staticGroup();
         this.tiles = new TileFactory(this);
         this.discs = null;
@@ -31,7 +33,7 @@ export class GameLogic extends Scene {
     addEnemy(enemy, onPlayerHit) {
         this.enemies.push(enemy);
         this.physics.add.collider(enemy, this.platforms);
-        this.physics.add.collider(this.player, enemy, onPlayerHit, null, this);
+        this.physics.add.overlap(this.player, enemy, onPlayerHit, null, this);
         this.physics.add.overlap(enemy, this.discs, this.onDiscHitEnemy, null, this);
     }
 
@@ -44,7 +46,8 @@ export class GameLogic extends Scene {
     }
 
     updateEnemies() {
-        for (var enemy of this.enemies) {
+        this.enemies = this.enemies.filter(enemy => enemy.active);
+        for (const enemy of this.enemies) {
             enemy.update(this.player);
         }
     }
@@ -58,16 +61,7 @@ export class GameLogic extends Scene {
         );
         this.discs.add(disc);
         disc.body.setAllowGravity(false);
-  
-        for (const enemy of this.enemies) {
-            this.physics.add.overlap(
-                disc,
-                enemy,
-                this.onDiscHitEnemy,
-                null,
-                this
-            );
-        }
+        disc.body.setVelocity(direction * 900, 0);
 
         return disc;
     }
@@ -76,9 +70,45 @@ export class GameLogic extends Scene {
         this.discs = this.physics.add.group();
     }
 
+    createPlatform(height, start, width) {
+        const groundY = WORLD_HEIGHT - TILE_SIZE;
+        for (
+            let x = TILE_SIZE * start;
+            x < TILE_SIZE * (start + width);
+            x += TILE_SIZE
+        ) {
+            this.tiles.createTile(
+                x,
+                groundY - TILE_SIZE * height,
+                'GRASS_TOP1',
+                this.platforms
+            );
+        }
+    }
+
+    createGround(length) {
+        const grassTiles = ['GRASS_TOP1', 'GRASS_TOP2', 'GRASS_TOP3', 'GRASS_TOP4'];
+        const dirtTiles = ['DIRT1', 'DIRT2', 'DIRT3', 'DIRT4', 'DIRT6', 'DIRT7', 'DIRT8'];
+        const groundY = WORLD_HEIGHT - TILE_SIZE;
+
+        // Visual-only tiles (no physics bodies)
+        for (let x = TILE_SIZE; x < length - TILE_SIZE; x += TILE_SIZE) {
+            const dirt = this.tiles.createVisualTile(x, groundY, dirtTiles[Math.floor(Math.random() * dirtTiles.length)]);
+            dirt.flipY = true;
+        }
+        for (let x = TILE_SIZE; x < length - TILE_SIZE; x += TILE_SIZE) {
+            this.tiles.createVisualTile(x, groundY - TILE_SIZE, grassTiles[Math.floor(Math.random() * grassTiles.length)]);
+        }
+
+        // Single static collision body for the entire ground
+        const groundBody = this.add.zone(TILE_SIZE, groundY - TILE_SIZE, length - TILE_SIZE * 2, TILE_SIZE * 2);
+        groundBody.setOrigin(0, 0);
+        this.physics.add.existing(groundBody, true);
+        this.platforms.add(groundBody);
+    }
+
     onDiscHitEnemy(enemy, disc) {
         enemy.takeDamage(1);
-        console.log(enemy.isStunned);
         disc.destroy();
     }
 

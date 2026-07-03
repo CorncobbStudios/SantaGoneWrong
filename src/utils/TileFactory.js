@@ -29,4 +29,11 @@ export default class TileFactory {
 
         return tile;
     }
+
+    createVisualTile(x, y, key) {
+        const frame = this.tiles[key];
+        const tile = this.scene.add.image(x, y, 'tiles', frame);
+        tile.setOrigin(0, 0);
+        return tile;
+    }
 }

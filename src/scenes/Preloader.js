@@ -19,6 +19,18 @@ export class Preloader extends Phaser.Scene {
         this.load.image('star', '/objects/star.png');
         this.load.image('bomb', '/objects/bomb.png');
         this.load.image('disc', '/objects/discObject.png');
+        this.load.image('volcano', '/sprites/volcano.png');
+        this.load.image('mainmenu', '/assets/mainmenu.png');
+
+        this.load.spritesheet('demon', '/sprites/demonsprite.png',{
+            frameWidth: 64,
+            frameHeight: 64
+        });
+
+        this.load.spritesheet('discSelect', '/assets/discSelector.png',{
+            frameWidth: 36,
+            frameHeight: 30
+        });
 
         this.load.spritesheet('tiles', '/assets/tiles.png', {
             frameWidth: 32,
@@ -39,6 +51,7 @@ export class Preloader extends Phaser.Scene {
     create() {
         this.textures.get('kasey').setFilter(Phaser.Textures.FilterMode.NEAREST);
         this.textures.get('nk').setFilter(Phaser.Textures.FilterMode.NEAREST);
+        this.textures.get('demon').setFilter(Phaser.Textures.FilterMode.NEAREST);
 
         this.scene.start('MainMenu');
     }

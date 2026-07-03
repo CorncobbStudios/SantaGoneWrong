@@ -8,13 +8,13 @@ export class Disc extends Phaser.Physics.Arcade.Sprite {
         this.direction = direction
         this.startX = x;
         this.body.setAllowGravity(false);
-
     }
 
     preUpdate(time, delta){
         super.preUpdate(time, delta);
 
-        this.body.setVelocity(this.direction * 900, 0);
+        if (!this.active) return;
+
         if (Math.abs(this.x - this.startX) > 400){
             this.destroy();
         }

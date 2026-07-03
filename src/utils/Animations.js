@@ -101,4 +101,62 @@ export function createEnemyAnimations(scene){
             frameRate: 1,
             repeat: 0
         });}
-}
+
+    if (!scene.anims.exists('demon_idle')){
+        scene.anims.create({
+            key: 'demon_idle',
+            frames: scene.anims.generateFrameNumbers('demon', {
+                start: 8,
+                end: 14,
+            }),
+            frameRate: 6,
+            repeat: -1
+        });}
+
+    if (!scene.anims.exists('demon_run')){
+        scene.anims.create({
+            key: 'demon_run',
+            frames: scene.anims.generateFrameNumbers('demon', {
+                start: 16,
+                end: 19,
+            }),
+            frameRate: 12,
+            repeat: -1
+        });}
+
+    if (!scene.anims.exists('demon_jump')){
+        scene.anims.create({
+            key: 'demon_jump',
+            frames: scene.anims.generateFrameNumbers('demon', {
+                start: 0,
+                end: 2
+            }),
+            frameRate: 6,
+            repeat: 0
+        });}
+
+    if (!scene.anims.exists('demon_fall')){
+        scene.anims.create({
+            key: 'demon_fall',
+            frames: scene.anims.generateFrameNumbers('demon', {
+                start: 3,
+                end: 4
+            }),
+            frameRate: 1,
+            repeat: 0
+        });}
+
+    }
+
+    export function createDiscSelectAnimations(scene){
+        if (!scene.anims.exists('disc_select')){
+        scene.anims.create({
+            key: 'disc_select',
+            frames: scene.anims.generateFrameNumbers('discSelect', {
+                start: 0,
+                end: 7
+            }),
+            frameRate: 5,
+            repeat: -1
+        });}
+    }
