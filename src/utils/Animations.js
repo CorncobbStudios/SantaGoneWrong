@@ -115,6 +115,7 @@ export function createEnemyAnimations(scene){
     }
 
     if (!scene.anims.exists('demon_idle')){
+    if (!scene.anims.exists('demon_idle')){    
         scene.anims.create({
             key: 'demon_idle',
             frames: scene.anims.generateFrameNumbers('demon', {
@@ -131,17 +132,25 @@ export function createEnemyAnimations(scene){
             frames: scene.anims.generateFrameNumbers('demon', {
                 start: 16,
                 end: 19,
+    if (!scene.anims.exists('demon_run')){    
+        scene.anims.create({
+            key: 'demon_run',
+            frames: scene.anims.generateFrameNumbers('demon', {
+                start: 15,
+                end: 18,
             }),
             frameRate: 12,
             repeat: -1
         });}
 
     if (!scene.anims.exists('demon_jump')){
+    if (!scene.anims.exists('demon_jump')){    
         scene.anims.create({
             key: 'demon_jump',
             frames: scene.anims.generateFrameNumbers('demon', {
                 start: 0,
                 end: 2
+                end: 7
             }),
             frameRate: 6,
             repeat: 0

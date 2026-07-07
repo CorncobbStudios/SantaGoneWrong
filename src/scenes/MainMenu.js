@@ -25,6 +25,7 @@ export class MainMenu extends Phaser.Scene {
         ];
 
         this.cursorDisc = this.add.sprite(0, 0, 'discSelect');
+        this.cursorDisc = this.add.sprite('discObject', '/objects/discObject.png');
         this.cursorDisc.play('disc_select').setScale(.65);
 
         this.selected = 0;
@@ -68,6 +69,16 @@ export class MainMenu extends Phaser.Scene {
         this.input.keyboard.on('keydown-UP', () => {
             this.selected =
                 (this.selected - 1 + this.options.length)
+            this.menuItems.push(text);
+        });
+
+        this.updateSelection();
+
+        this.cursors = this.input.keyboard.createCursorKeys();
+
+        this.input.keyboard.on('keydown-UP', () => {
+            this.selected =
+                (this.selected - 1 + this.options.length)
                 % this.options.length;
 
             this.updateSelection();
@@ -81,9 +92,60 @@ export class MainMenu extends Phaser.Scene {
             this.updateSelection();
         });
 
+        this.input.keyboard.on('keydown-DOWN', () => {
+            this.selected =
+                (this.selected + 1)
+                % this.options.length;
+
+            this.updateSelection();
         this.input.keyboard.on('keydown-ENTER', () => {
             this.selectOption();
         });
+    }
+
+
+    updateSelection() {
+
+        this.input.keyboard.on('keydown-ENTER', () => {
+            this.selectOption();
+        this.menuItems.forEach((item, index) => {
+            item.setColor(
+                index === this.selected
+                    ? '#85c3db'
+                    : '#ffffff'
+            );
+        });
+
+        const selectedItem =
+            this.menuItems[this.selected];
+
+        this.cursorDisc.setPosition(
+            selectedItem.x - 20,
+            selectedItem.y + selectedItem.height / 2
+        );
+    }
+
+
+    selectOption() {
+
+        switch (this.selected) {
+
+        case 0:
+            this.scene.start('LevelSelect');
+            break;
+
+        case 1:
+            console.log('Load');
+            break;
+
+        case 2:
+            console.log('Config');
+            break;
+
+        case 3:
+            this.game.destroy(true);
+            break;
+        }
     }
 
 

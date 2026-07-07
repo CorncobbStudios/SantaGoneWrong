@@ -1,4 +1,5 @@
 import { GameLogic } from './GameLogic.js';
+import { NegativeKasey } from '../../gameobjects/NegaKasey.js';
 import { Demon } from '../../gameobjects/Demon.js';
 import { createEnemyAnimations } from '../../utils/Animations.js';
 const TILE_SIZE = 32;
@@ -48,6 +49,16 @@ export class Level2 extends GameLogic {
 
         createEnemyAnimations(this);
 
+        // NegaKaseys on platforms
+        this.addNegaKasey(9, 3);
+        this.addNegaKasey(15, 5);
+        this.addNegaKasey(21, 7);
+        this.addNegaKasey(31, 4);
+        this.addNegaKasey(35, 7);
+        this.addNegaKasey(45, 5);
+        this.addNegaKasey(51, 8);
+        this.addNegaKasey(63, 3);
+
         // Demons
         this.addDemon(10, 3);
         this.addDemon(32, 4);
@@ -55,6 +66,13 @@ export class Level2 extends GameLogic {
         // Volcanos
         // this.addVolcano(27 * TILE_SIZE, GROUND_Y - TILE_SIZE * 2, this.hitEnemy);
         // this.addVolcano(48 * TILE_SIZE, GROUND_Y - TILE_SIZE * 2, this.hitEnemy);
+    }
+
+    addNegaKasey(x, y) {
+        this.addEnemy(
+            new NegativeKasey(this, x * TILE_SIZE, GROUND_Y - y * TILE_SIZE),
+            this.hitEnemy
+        );
     }
 
     addDemon(x, y) {
