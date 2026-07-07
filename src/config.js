@@ -40,6 +40,5 @@ export const config = {
         Level3,
         GameOver,
         Victory
-        GameOver
     ]
 };

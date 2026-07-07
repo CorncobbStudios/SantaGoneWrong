@@ -87,19 +87,6 @@ export class GameLogic extends Scene {
         const groundY = WORLD_HEIGHT - TILE_SIZE;
         const top = groundY - TILE_SIZE * height;
 
-    addVolcano(x, y, onPlayerHit) {
-        const volcano = new Volcano(this, x, y);
-        this.volcanos.push(volcano);
-        this.physics.add.collider(volcano, this.platforms);
-        this.physics.add.collider(volcano.getBombGroup(), this.platforms);
-        this.physics.add.overlap(this.player, volcano.getBombGroup(), (player, bomb) => {
-            bomb.destroy();
-            onPlayerHit.call(this, player, bomb);
-        });
-    }
-
-    createPlatform(height, start, width) {
-        const groundY = WORLD_HEIGHT - TILE_SIZE;
         for (
             let x = TILE_SIZE * start;
             x < TILE_SIZE * (start + width);
@@ -108,7 +95,6 @@ export class GameLogic extends Scene {
             this.tiles.createTile(
                 x,
                 top,
-                groundY - TILE_SIZE * height,
                 'GRASS_TOP1',
                 this.platforms
             );

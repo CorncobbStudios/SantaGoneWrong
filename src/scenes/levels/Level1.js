@@ -49,15 +49,6 @@ export class Level1 extends GameLogic {
 
         // Boss - testing placement only, real fight belongs at the end of Level10
         this.addBossFight(20, 5);
-        this.addNegaKasey(11, 5);
-        this.addNegaKasey(17, 7);
-        this.addNegaKasey(22, 4);
-        this.addNegaKasey(28, 10);
-        this.addNegaKasey(29, 6);
-        this.addNegaKasey(32, 6);
-
-        // Demons - fast chasers
-        this.addDemon(14, 5);
 
         // Volcano
         // this.addVolcano(25 * TILE_SIZE, GROUND_Y - TILE_SIZE * 2, this.hitEnemy);
