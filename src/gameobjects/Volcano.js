@@ -1,3 +1,4 @@
+
 import * as Phaser from 'phaser';
 
 export class Volcano extends Phaser.Physics.Arcade.Sprite {

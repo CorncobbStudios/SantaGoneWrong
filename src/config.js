@@ -3,6 +3,7 @@ import { Boot } from './scenes/Boot.js';
 import { Preloader } from './scenes/Preloader.js';
 import { MainMenu } from './scenes/MainMenu.js';
 import { GameOver } from './scenes/GameOver.js';
+import { Victory } from './scenes/Victory.js';
 import { LevelSelect } from './scenes/LevelSelect.js';
 import { Level1 } from './scenes/levels/Level1.js';
 import { Level2 } from './scenes/levels/Level2.js';
@@ -20,7 +21,7 @@ export const config = {
         default: 'arcade',
         arcade: {
             gravity: { y: 300 },
-            debug: false
+            debug: true
         }
     },
 
@@ -37,6 +38,8 @@ export const config = {
         Level1,
         Level2,
         Level3,
+        GameOver,
+        Victory
         GameOver
     ]
 };

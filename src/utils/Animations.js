@@ -102,6 +102,19 @@ export function createEnemyAnimations(scene){
             repeat: 0
         });}
 
+    if (!scene.anims.exists('negative_throw')){
+        scene.anims.create({
+            key: 'negative_throw',
+            frames: scene.anims.generateFrameNumbers('nk', {
+                start: 18,
+                end: 23,
+            }),
+            frameRate: 10,
+            repeat: 0
+        });
+    }
+
+    if (!scene.anims.exists('demon_idle')){
     if (!scene.anims.exists('demon_idle')){    
         scene.anims.create({
             key: 'demon_idle',
@@ -113,6 +126,12 @@ export function createEnemyAnimations(scene){
             repeat: -1
         });}
 
+    if (!scene.anims.exists('demon_run')){
+        scene.anims.create({
+            key: 'demon_run',
+            frames: scene.anims.generateFrameNumbers('demon', {
+                start: 16,
+                end: 19,
     if (!scene.anims.exists('demon_run')){    
         scene.anims.create({
             key: 'demon_run',
@@ -124,14 +143,27 @@ export function createEnemyAnimations(scene){
             repeat: -1
         });}
 
+    if (!scene.anims.exists('demon_jump')){
     if (!scene.anims.exists('demon_jump')){    
         scene.anims.create({
             key: 'demon_jump',
             frames: scene.anims.generateFrameNumbers('demon', {
                 start: 0,
+                end: 2
                 end: 7
             }),
             frameRate: 6,
+            repeat: 0
+        });}
+
+    if (!scene.anims.exists('demon_fall')){
+        scene.anims.create({
+            key: 'demon_fall',
+            frames: scene.anims.generateFrameNumbers('demon', {
+                start: 3,
+                end: 4
+            }),
+            frameRate: 1,
             repeat: 0
         });}
 

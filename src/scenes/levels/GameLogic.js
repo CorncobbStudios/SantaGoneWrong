@@ -18,6 +18,7 @@ export class GameLogic extends Scene {
         this.enemies = [];
         this.volcanos = [];
         this.platforms = this.physics.add.staticGroup();
+        this.platformRects = [];
         this.tiles = new TileFactory(this);
         this.discs = null;
     }
@@ -35,6 +36,18 @@ export class GameLogic extends Scene {
         this.physics.add.collider(enemy, this.platforms);
         this.physics.add.overlap(this.player, enemy, onPlayerHit, null, this);
         this.physics.add.overlap(enemy, this.discs, this.onDiscHitEnemy, null, this);
+    }
+
+    addBoss(boss, onPlayerHit) {
+        this.addEnemy(boss, onPlayerHit);
+
+        const projectiles = boss.getProjectileGroup();
+        if (projectiles) {
+            this.physics.add.overlap(this.player, projectiles, (player, projectile) => {
+                projectile.destroy();
+                onPlayerHit.call(this, player, projectile);
+            });
+        }
     }
 
     updatePlayer() {
@@ -70,6 +83,10 @@ export class GameLogic extends Scene {
         this.discs = this.physics.add.group();
     }
 
+    createPlatform(height, start, width) {
+        const groundY = WORLD_HEIGHT - TILE_SIZE;
+        const top = groundY - TILE_SIZE * height;
+
     addVolcano(x, y, onPlayerHit) {
         const volcano = new Volcano(this, x, y);
         this.volcanos.push(volcano);
@@ -90,11 +107,33 @@ export class GameLogic extends Scene {
         ) {
             this.tiles.createTile(
                 x,
+                top,
                 groundY - TILE_SIZE * height,
                 'GRASS_TOP1',
                 this.platforms
             );
         }
+
+        this.platformRects.push({
+            left: TILE_SIZE * start,
+            right: TILE_SIZE * (start + width),
+            top,
+        });
+    }
+
+    // Returns the bounding box of the platform whose top surface is at
+    // (x, y), or null if it's the main ground (not tracked here) or
+    // between platforms. Lets enemies navigate to a real edge instead of
+    // guessing blindly. y should be a feet/bottom position (e.g.
+    // entity.body.bottom), not a sprite's center - a standing entity's
+    // feet sit right at rect.top, within a small tolerance for physics
+    // settling.
+    getPlatformAt(x, y) {
+        const TOLERANCE = 8;
+
+        return this.platformRects.find(
+            (rect) => x >= rect.left && x <= rect.right && Math.abs(rect.top - y) <= TOLERANCE
+        ) ?? null;
     }
 
     createGround(length) {
