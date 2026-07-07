@@ -1,6 +1,7 @@
 import { GameLogic } from './GameLogic.js';
 import { NegativeKasey } from '../../gameobjects/NegaKasey.js';
 import { Demon } from '../../gameobjects/Demon.js';
+import { NegativeKaseyBoss } from '../../gameobjects/NegativeKaseyBoss.js';
 import { createEnemyAnimations } from '../../utils/Animations.js';
 const TILE_SIZE = 32;
 const WORLD_WIDTH = TILE_SIZE * 115;
@@ -36,15 +37,18 @@ export class Level1 extends GameLogic {
         this.physics.add.collider(this.player, this.platforms);
 
         createEnemyAnimations(this);
-        this.addNegaKasey(11, 5);
-        this.addNegaKasey(17, 7);
-        this.addNegaKasey(22, 4);
-        this.addNegaKasey(28, 10);
-        this.addNegaKasey(29, 6);
-        this.addNegaKasey(32, 6);
+        // this.addNegaKasey(11, 5);
+        // this.addNegaKasey(17, 7);
+        // this.addNegaKasey(22, 4);
+        // this.addNegaKasey(28, 10);
+        // this.addNegaKasey(29, 6);
+        // this.addNegaKasey(32, 6);
 
         // Demons - fast chasers
-        this.addDemon(14, 5);
+        // this.addDemon(14, 5);
+
+        // Boss - testing placement only, real fight belongs at the end of Level10
+        this.addBossFight(20, 5);
 
         // Volcano
         // this.addVolcano(25 * TILE_SIZE, GROUND_Y - TILE_SIZE * 2, this.hitEnemy);
@@ -60,6 +64,13 @@ export class Level1 extends GameLogic {
     addDemon(x, y) {
         this.addEnemy(
             new Demon(this, x * TILE_SIZE, GROUND_Y - y * TILE_SIZE),
+            this.hitEnemy
+        );
+    }
+
+    addBossFight(x, y) {
+        this.addBoss(
+            new NegativeKaseyBoss(this, x * TILE_SIZE, GROUND_Y - y * TILE_SIZE),
             this.hitEnemy
         );
     }

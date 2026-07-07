@@ -42,6 +42,17 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
         }
 
         const onGround = this.body.blocked.down || this.body.touching.down;
+
+        this.decideMovement(player, onGround);
+
+        this.updateAirAnimation(onGround);
+    }
+
+    // Default movement pattern: chase once the player enters detectionRange,
+    // otherwise stand idle. Override this in a subclass for a different
+    // movement pattern (patrol, stay put, etc.) while still reusing the
+    // shared moveTowards/jump/idle/playAnimation helpers below.
+    decideMovement(player, onGround) {
         const distance = Phaser.Math.Distance.Between(this.x, this.y, player.x, player.y);
 
         if (distance < this.detectionRange) {
@@ -49,8 +60,6 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
         } else {
             this.idle(onGround);
         }
-
-        this.updateAirAnimation(onGround);
     }
 
     chasePlayer(player, onGround) {

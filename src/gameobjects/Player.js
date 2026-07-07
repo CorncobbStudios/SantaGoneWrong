@@ -17,6 +17,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         this.facing = 1;
         this.attackCooldown = 0;
         this.isAttacking = false;
+        this.health = 3;
 
         this.setBounce(0);
         this.setCollideWorldBounds(true);

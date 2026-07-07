@@ -102,6 +102,18 @@ export function createEnemyAnimations(scene){
             repeat: 0
         });}
 
+    if (!scene.anims.exists('negative_throw')){
+        scene.anims.create({
+            key: 'negative_throw',
+            frames: scene.anims.generateFrameNumbers('nk', {
+                start: 18,
+                end: 23,
+            }),
+            frameRate: 10,
+            repeat: 0
+        });
+    }
+
     if (!scene.anims.exists('demon_idle')){
         scene.anims.create({
             key: 'demon_idle',
