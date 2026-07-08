@@ -10,6 +10,7 @@ transition into Level 3 (chasing NegaKasey).
 - Demon (common enemy)
 - Volcano (common enemy)
 - Mount Fuji background
+- Kaguya (NPC princess)
 
 Everything below is what's still missing.
 
@@ -63,17 +64,9 @@ convention as your other bosses:
             getting hurt in the myth — recovery frame can double as his
             flinch/hit-reaction if you want to save a frame)
 
-## 2. PRINCESS KAGUYA - new character (non-enemy)
-File:        public/sprites/princesssprite.png
-Frame size:  64x64
-Frames:
-    0-3     idle (standing, ambient sway)
-    4-7     talk/dialog (courtyard reveal scene)
-    8-11    reveal/reaction (calling out the princes' lie)
-    12-15   moonlight cast (raising a hand to open the transport effect)
-Also useful: one still portrait/bust image if dialog boxes use portraits.
 
-## 3. THE FIVE RELIC ITEMS
+
+## 2. THE FIVE RELIC ITEMS
 Each is a small static icon/prop — no animation needed unless you want a
 subtle idle shimmer. These are what the player actually finds and hands
 off during the trials, and what the princes falsely claim as their own.
@@ -86,7 +79,7 @@ off during the trials, and what the princes falsely claim as their own.
 Suggested file: public/sprites/relic_items.png as one small sheet
 (5 icons, consistent size, e.g. 32x32 each).
 
-## 4. MOONLIGHT TRANSPORT EFFECT
+## 3. MOONLIGHT TRANSPORT EFFECT
 Used at the end of Level 2 when Kaguya moves the player to Level 3.
 Needs:
     - a particle/glow sheet (soft light motes, moon-pale color palette)
@@ -100,12 +93,22 @@ or handled as a shader/tween if no dedicated art wants to be made for it
 — flagging both options since this could go either way depending on
 budget.
 
-## 5. NEGAKASEY THEFT MOMENT (cosmetic, optional)
+## 4. NEGAKASEY THEFT MOMENT (cosmetic, optional)
 A quick "shadow snatch" effect for when NegaKasey yanks the items from
 Kaguya's hands — could reuse an existing dash/blur effect if you have
 one, otherwise a simple dark particle burst would sell the moment
 without needing new dedicated art.
 
+## Finished. PRINCESS KAGUYA - new character (non-enemy) 
+File:        public/sprites/princesssprite.png
+Frame size:  128x128
+Frames:
+    0-4     idle (standing, ambient sway)
+    10-18   walking (courtyard reveal scene)
+    20-28   talking/nodding (calling out the princes' lie)
+    30-39   moonlight cast (raising a hand to open the transport effect)
+    5-9, 19,29 all empty frames
+Also useful: one still portrait/bust image if dialog boxes use portraits.
 ---
 
 ## SUGGESTED ORDER
