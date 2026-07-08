@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700">
+  <rect width="1200" height="700" fill="#1a1a2e"/>
+  <text x="600" y="35" text-anchor="middle" fill="#f4e4c1" font-family="serif" font-size="24" font-weight="bold">Kaguya Rework - Concept Sketches</text>
+
+  <!-- Ishitsukuri -->
+  <g transform="translate(60,70)">
+    <rect width="180" height="220" fill="#22223a" stroke="#555" rx="8"/>
+    <text x="90" y="20" text-anchor="middle" fill="#f4e4c1" font-family="serif" font-size="14">Ishitsukuri</text>
+    <!-- robe body -->
+    <path d="M90 45 L60 190 Q90 210 120 190 L90 45 Z" fill="#7a5c9e"/>
+    <circle cx="90" cy="55" r="18" fill="#e8c39e"/>
+    <path d="M72 45 Q90 25 108 45" fill="none" stroke="#333" stroke-width="4"/>
+    <!-- fake stone bowl held out -->
+    <ellipse cx="130" cy="140" rx="18" ry="10" fill="#8b8378" stroke="#555"/>
+    <line x1="105" y1="130" x2="130" y2="140" stroke="#e8c39e" stroke-width="6"/>
+    <text x="90" y="212" text-anchor="middle" fill="#999" font-family="sans-serif" font-size="10">stone bowl trick</text>
+  </g>
+
+  <!-- Kuramochi -->
+  <g transform="translate(260,70)">
+    <rect width="180" height="220" fill="#22223a" stroke="#555" rx="8"/>
+    <text x="90" y="20" text-anchor="middle" fill="#f4e4c1" font-family="serif" font-size="14">Kuramochi</text>
+    <path d="M90 45 L58 190 Q90 210 122 190 L90 45 Z" fill="#3f6d5c"/>
+    <circle cx="90" cy="55" r="18" fill="#e8c39e"/>
+    <path d="M72 45 Q90 28 108 45" fill="none" stroke="#333" stroke-width="4"/>
+    <!-- jeweled branch -->
+    <path d="M60 120 Q100 100 130 130" fill="none" stroke="#c99a3b" stroke-width="4"/>
+    <circle cx="130" cy="130" r="5" fill="#ffd76b"/>
+    <circle cx="115" cy="118" r="4" fill="#ff9ad1"/>
+    <circle cx="75" cy="122" r="4" fill="#7be0ff"/>
+    <text x="90" y="212" text-anchor="middle" fill="#999" font-family="sans-serif" font-size="10">fake jeweled branch</text>
+  </g>
+
+  <!-- Abe -->
+  <g transform="translate(460,70)">
+    <rect width="180" height="220" fill="#22223a" stroke="#555" rx="8"/>
+    <text x="90" y="20" text-anchor="middle" fill="#f4e4c1" font-family="serif" font-size="14">Minister Abe</text>
+    <path d="M90 45 L60 190 Q90 210 120 190 L90 45 Z" fill="#b5452e"/>
+    <path d="M90 45 L60 190 Q90 210 120 190 L90 45 Z" fill="none" stroke="#ff8a50" stroke-width="2" stroke-dasharray="4 3"/>
+    <circle cx="90" cy="55" r="18" fill="#e8c39e"/>
+    <path d="M72 45 Q90 28 108 45" fill="none" stroke="#333" stroke-width="4"/>
+    <!-- fire licks on robe -->
+    <path d="M75 150 q5 -15 -3 -25" fill="none" stroke="#ffb347" stroke-width="3"/>
+    <path d="M100 160 q8 -18 0 -30" fill="none" stroke="#ffb347" stroke-width="3"/>
+    <text x="90" y="212" text-anchor="middle" fill="#999" font-family="sans-serif" font-size="10">fire-rat robe, panicking</text>
+  </g>
+
+  <!-- Isonokami -->
+  <g transform="translate(660,70)">
+    <rect width="180" height="220" fill="#22223a" stroke="#555" rx="8"/>
+    <text x="90" y="20" text-anchor="middle" fill="#f4e4c1" font-family="serif" font-size="14">Isonokami</text>
+    <path d="M90 45 L60 190 Q90 210 120 190 L90 45 Z" fill="#2d4a6b"/>
+    <circle cx="90" cy="55" r="18" fill="#e8c39e"/>
+    <path d="M72 45 Q90 28 108 45" fill="none" stroke="#333" stroke-width="4"/>
+    <!-- swallow shape -->
+    <path d="M110 100 q15 -10 25 0 q-10 5 -12 12 q-2 -7 -13 -12z" fill="#4a4a5a"/>
+    <text x="90" y="212" text-anchor="middle" fill="#999" font-family="sans-serif" font-size="10">swallow's cowrie shell</text>
+  </g>
+
+  <!-- Otomo/Krampus note -->
+  <g transform="translate(860,70)">
+    <rect width="180" height="220" fill="#22223a" stroke="#555" rx="8"/>
+    <text x="90" y="20" text-anchor="middle" fill="#f4e4c1" font-family="serif" font-size="14">Ōtomo</text>
+    <text x="90" y="110" text-anchor="middle" fill="#888" font-family="sans-serif" font-size="11">(reuse existing</text>
+    <text x="90" y="126" text-anchor="middle" fill="#888" font-family="sans-serif" font-size="11">Krampus moveset,</text>
+    <text x="90" y="142" text-anchor="middle" fill="#888" font-family="sans-serif" font-size="11">reskin only)</text>
+    <path d="M90 45 L60 190 Q90 210 120 190 L90 45 Z" fill="#6b2d2d" opacity="0.5"/>
+    <circle cx="90" cy="55" r="18" fill="#e8c39e" opacity="0.5"/>
+  </g>
+
+  <!-- Princess Kaguya -->
+  <g transform="translate(1060,70)">
+    <rect width="80" height="220" fill="#22223a" stroke="#555" rx="8"/>
+  </g>
+  <g transform="translate(430,330)">
+    <rect width="340" height="330" fill="#22223a" stroke="#c99a3b" stroke-width="2" rx="10"/>
+    <text x="170" y="30" text-anchor="middle" fill="#f4e4c1" font-family="serif" font-size="18">Princess Kaguya</text>
+    <!-- flowing kimono silhouette -->
+    <path d="M170 60 L110 280 Q170 300 230 280 L170 60 Z" fill="#e8b4d8"/>
+    <path d="M170 60 L110 280 Q170 300 230 280 L170 60 Z" fill="none" stroke="#c99a3b" stroke-width="2"/>
+    <circle cx="170" cy="75" r="24" fill="#f0d9c0"/>
+    <path d="M146 65 Q170 35 194 65 Q194 90 170 95 Q146 90 146 65 Z" fill="#2b2b2b"/>
+    <!-- moon motif -->
+    <circle cx="270" cy="55" r="16" fill="#f4e4c1" opacity="0.8"/>
+    <text x="170" y="310" text-anchor="middle" fill="#999" font-family="sans-serif" font-size="11">idle / talk / reveal / celebration set</text>
+  </g>
+
+  <text x="600" y="680" text-anchor="middle" fill="#666" font-family="sans-serif" font-size="11">Rough silhouettes only - final pixel art should follow existing 64x64 frame grid</text>
+</svg>
