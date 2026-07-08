@@ -103,11 +103,11 @@ without needing new dedicated art.
 File:        public/sprites/princesssprite.png
 Frame size:  128x128
 Frames:
-    0-4     idle (standing, ambient sway)
-    10-18   walking (courtyard reveal scene)
-    20-28   talking/nodding (calling out the princes' lie)
-    30-39   moonlight cast (raising a hand to open the transport effect)
-    5-9, 19,29 all empty frames
+   - 0-4     idle (standing, ambient sway)
+   - 10-18   walking (courtyard reveal scene)
+   - 20-28   talking/nodding (calling out the princes' lie)
+   - 30-39   moonlight cast (raising a hand to open the transport effect)
+   - 5-9, 19,29 all empty frames
 Also useful: one still portrait/bust image if dialog boxes use portraits.
 ---
 
