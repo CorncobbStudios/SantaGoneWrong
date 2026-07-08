@@ -10,9 +10,17 @@ export default class TileFactory {
             DIRT2: 3,
             DIRT3: 5,
             DIRT4: 7,
+            DIRT5: 9,
             DIRT6: 11,
             DIRT7: 13,
-            DIRT8: 15
+            DIRT8: 15,
+            // Previously-unmapped frames already present in tiles.png (one
+            // full column, indices 2/6/10/14). Names are a placeholder guess
+            // - confirm against the art before relying on these visually.
+            EDGE_TOP1: 2,
+            EDGE_TOP2: 6,
+            EDGE_TOP3: 10,
+            EDGE_TOP4: 14,
         };
     }
 

@@ -17,12 +17,30 @@ export class Preloader extends Phaser.Scene {
         this.load.image('sky', '/assets/sky.png');
         this.load.image('mountfuji', '/assets/mountfuji2.png');        
         this.load.image('star', '/objects/star.png');
-        this.load.image('bomb', '/objects/bomb.png');
+        this.load.image('magmaball', '/objects/magmaball.png');
         this.load.image('disc', '/objects/discObject.png');
-        this.load.image('volcano', '/sprites/volcano.png');
         this.load.image('mainmenu', '/assets/mainmenu.png');
 
+        // 10x2 grid of 64x64 frames: 0-9 eruption, 10-17 idle, 18-19 empty.
+        this.load.spritesheet('volcano', '/sprites/volcanosheet.png', {
+            frameWidth: 64,
+            frameHeight: 64
+        });
+
         this.load.spritesheet('demon', '/sprites/demonsprite.png',{
+            frameWidth: 64,
+            frameHeight: 64
+        });
+
+        // Yeti/Krampus art doesn't exist yet - temporarily riding the demon
+        // and nk sheets so the new enemy/boss are visible and testable.
+        // Swap these paths for real art, then update the matching frame
+        // ranges in Animations.js.
+        this.load.spritesheet('yeti', '/sprites/demonsprite.png', {
+            frameWidth: 64,
+            frameHeight: 64
+        });
+        this.load.spritesheet('krampus', '/sprites/nkspritesheet.png', {
             frameWidth: 64,
             frameHeight: 64
         });
@@ -52,6 +70,9 @@ export class Preloader extends Phaser.Scene {
         this.textures.get('kasey').setFilter(Phaser.Textures.FilterMode.NEAREST);
         this.textures.get('nk').setFilter(Phaser.Textures.FilterMode.NEAREST);
         this.textures.get('demon').setFilter(Phaser.Textures.FilterMode.NEAREST);
+        this.textures.get('volcano').setFilter(Phaser.Textures.FilterMode.NEAREST);
+        this.textures.get('yeti').setFilter(Phaser.Textures.FilterMode.NEAREST);
+        this.textures.get('krampus').setFilter(Phaser.Textures.FilterMode.NEAREST);
 
         this.scene.start('MainMenu');
     }

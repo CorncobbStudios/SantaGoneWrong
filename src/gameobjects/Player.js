@@ -17,7 +17,10 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         this.facing = 1;
         this.attackCooldown = 0;
         this.isAttacking = false;
-        this.health = 3;
+        this.maxHealth = 3;
+        this.health = this.maxHealth;
+        this.invulnerable = false;
+        this.invulnerabilityDuration = 1000;
 
         this.setBounce(0);
         this.setCollideWorldBounds(true);
@@ -127,6 +130,32 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         this.attackCooldown = 15;
 
         this.play('throw', true);
+    }
+
+    // Returns true if this hit brought health to 0 or below (i.e. the player died).
+    takeDamage(amount = 1) {
+        if (this.invulnerable) return false;
+
+        this.invulnerable = true;
+        this.health -= amount;
+
+        this.setTint(0xff0000);
+        this.scene.tweens.add({
+            targets: this,
+            alpha: { from: 1, to: 0.3 },
+            duration: 100,
+            yoyo: true,
+            repeat: 4,
+        });
+
+        this.scene.time.delayedCall(this.invulnerabilityDuration, () => {
+            if (!this.active) return;
+            this.invulnerable = false;
+            this.clearTint();
+            this.setAlpha(1);
+        });
+
+        return this.health <= 0;
     }
 
 }

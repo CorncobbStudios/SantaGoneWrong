@@ -80,24 +80,18 @@ export class Level3 extends GameLogic {
 
     addNegaKasey(x, y) {
         this.addEnemy(
-            new NegativeKasey(this, x * TILE_SIZE, GROUND_Y - y * TILE_SIZE),
-            this.hitEnemy
+            new NegativeKasey(this, x * TILE_SIZE, GROUND_Y - y * TILE_SIZE)
         );
     }
 
     addDemon(x, y) {
         this.addEnemy(
-            new Demon(this, x * TILE_SIZE, GROUND_Y - y * TILE_SIZE),
-            this.hitEnemy
+            new Demon(this, x * TILE_SIZE, GROUND_Y - y * TILE_SIZE)
         );
     }
 
     update() {
         this.updatePlayer();
         this.updateEnemies();
-    }
-
-    hitEnemy(player, enemy) {
-        this.scene.start('GameOver', { level: 'Level3' });
     }
 }

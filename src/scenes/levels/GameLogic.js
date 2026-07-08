@@ -3,8 +3,8 @@ import { Scene } from 'phaser';
 import { Player } from '../../gameobjects/Player.js';
 import { createPlayerAnimations } from '../../utils/Animations.js';
 import { Disc } from '../../gameobjects/Disc.js';
-import { Volcano } from '../../gameobjects/Volcano.js';
 import TileFactory from '../../utils/TileFactory.js';
+import { HUD } from '../../ui/HUD.js';
 
 const TILE_SIZE = 32;
 const WORLD_HEIGHT = 600;
@@ -16,11 +16,12 @@ export class GameLogic extends Scene {
     init() {
         this.cameras.main.fadeIn(1000, 0, 0, 0);
         this.enemies = [];
-        this.volcanos = [];
         this.platforms = this.physics.add.staticGroup();
+        this.hazards = this.physics.add.staticGroup();
         this.platformRects = [];
         this.tiles = new TileFactory(this);
         this.discs = null;
+        this.hud = null;
     }
 
     createPlayer(x, y) {
@@ -28,26 +29,46 @@ export class GameLogic extends Scene {
         this.player = new Player(this, x, y);
         this.cursors = this.input.keyboard.createCursorKeys();
         this.attackKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
+        this.hud = new HUD(this, this.player.maxHealth);
+        this.hud.setHealth(this.player.health);
         return this.player;
     }
 
-    addEnemy(enemy, onPlayerHit) {
+    // Default onPlayerHit callback for addEnemy/addBoss. Damages the player,
+    // refreshes the HUD, and ends the level once health hits 0 - using
+    // this.scene.key means every level reports the right GameOver data
+    // without needing its own hitEnemy override.
+    handlePlayerHit(player, source) {
+        const died = player.takeDamage(1);
+        this.hud?.setHealth(player.health);
+        if (died) {
+            this.scene.start('GameOver', { level: this.scene.key });
+        }
+    }
+
+    // Wires a source's projectile group (if it has one) to damage the player
+    // on overlap. Shared by addEnemy (ranged enemies) and addBoss - anything
+    // that implements getProjectileGroup().
+    wireProjectiles(source, onPlayerHit) {
+        const projectiles = source.getProjectileGroup?.();
+        if (!projectiles) return;
+
+        this.physics.add.overlap(this.player, projectiles, (player, projectile) => {
+            projectile.destroy();
+            onPlayerHit.call(this, player, projectile);
+        });
+    }
+
+    addEnemy(enemy, onPlayerHit = this.handlePlayerHit) {
         this.enemies.push(enemy);
         this.physics.add.collider(enemy, this.platforms);
         this.physics.add.overlap(this.player, enemy, onPlayerHit, null, this);
         this.physics.add.overlap(enemy, this.discs, this.onDiscHitEnemy, null, this);
+        this.wireProjectiles(enemy, onPlayerHit);
     }
 
-    addBoss(boss, onPlayerHit) {
+    addBoss(boss, onPlayerHit = this.handlePlayerHit) {
         this.addEnemy(boss, onPlayerHit);
-
-        const projectiles = boss.getProjectileGroup();
-        if (projectiles) {
-            this.physics.add.overlap(this.player, projectiles, (player, projectile) => {
-                projectile.destroy();
-                onPlayerHit.call(this, player, projectile);
-            });
-        }
     }
 
     updatePlayer() {
@@ -83,7 +104,9 @@ export class GameLogic extends Scene {
         this.discs = this.physics.add.group();
     }
 
-    createPlatform(height, start, width) {
+    createPlatform(height, start, width, options = {}) {
+        const grassTiles = ['GRASS_TOP1', 'GRASS_TOP2', 'GRASS_TOP3', 'GRASS_TOP4'];
+        const thickness = options.thickness ?? 1;
         const groundY = WORLD_HEIGHT - TILE_SIZE;
         const top = groundY - TILE_SIZE * height;
 
@@ -92,12 +115,12 @@ export class GameLogic extends Scene {
             x < TILE_SIZE * (start + width);
             x += TILE_SIZE
         ) {
-            this.tiles.createTile(
-                x,
-                top,
-                'GRASS_TOP1',
-                this.platforms
-            );
+            const topKey = options.topKey ?? grassTiles[Math.floor(Math.random() * grassTiles.length)];
+            this.tiles.createTile(x, top, topKey, this.platforms);
+
+            for (let row = 1; row < thickness; row++) {
+                this.tiles.createTile(x, top + TILE_SIZE * row, 'DIRT3', this.platforms);
+            }
         }
 
         this.platformRects.push({

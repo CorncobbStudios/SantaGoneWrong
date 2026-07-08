@@ -158,6 +158,119 @@ export function createEnemyAnimations(scene){
             repeat: 0
         });}
 
+    // Yeti currently rides the demon spritesheet (see Preloader.js) until
+    // real art exists, so it reuses demon's frame layout for now.
+    if (!scene.anims.exists('yeti_idle')){
+        scene.anims.create({
+            key: 'yeti_idle',
+            frames: scene.anims.generateFrameNumbers('yeti', { start: 8, end: 14 }),
+            frameRate: 6,
+            repeat: -1
+        });}
+
+    if (!scene.anims.exists('yeti_run')){
+        scene.anims.create({
+            key: 'yeti_run',
+            frames: scene.anims.generateFrameNumbers('yeti', { start: 16, end: 19 }),
+            frameRate: 12,
+            repeat: -1
+        });}
+
+    if (!scene.anims.exists('yeti_jump')){
+        scene.anims.create({
+            key: 'yeti_jump',
+            frames: scene.anims.generateFrameNumbers('yeti', { start: 0, end: 2 }),
+            frameRate: 6,
+            repeat: 0
+        });}
+
+    if (!scene.anims.exists('yeti_fall')){
+        scene.anims.create({
+            key: 'yeti_fall',
+            frames: scene.anims.generateFrameNumbers('yeti', { start: 3, end: 4 }),
+            frameRate: 1,
+            repeat: 0
+        });}
+
+    if (!scene.anims.exists('yeti_throw')){
+        scene.anims.create({
+            key: 'yeti_throw',
+            frames: scene.anims.generateFrameNumbers('yeti', { start: 8, end: 14 }),
+            frameRate: 10,
+            repeat: 0
+        });}
+
+    // Krampus currently rides the nk spritesheet (see Preloader.js) until
+    // real art exists. charge/slam reuse the throw frame range as a
+    // placeholder telegraph - swap once dedicated frames exist.
+    if (!scene.anims.exists('krampus_idle')){
+        scene.anims.create({
+            key: 'krampus_idle',
+            frames: scene.anims.generateFrameNumbers('krampus', { start: 0, end: 5 }),
+            frameRate: 6,
+            repeat: -1
+        });}
+
+    if (!scene.anims.exists('krampus_run')){
+        scene.anims.create({
+            key: 'krampus_run',
+            frames: scene.anims.generateFrameNumbers('krampus', { start: 12, end: 17 }),
+            frameRate: 12,
+            repeat: -1
+        });}
+
+    if (!scene.anims.exists('krampus_jump')){
+        scene.anims.create({
+            key: 'krampus_jump',
+            frames: scene.anims.generateFrameNumbers('krampus', { start: 6, end: 8 }),
+            frameRate: 6,
+            repeat: 0
+        });}
+
+    if (!scene.anims.exists('krampus_fall')){
+        scene.anims.create({
+            key: 'krampus_fall',
+            frames: scene.anims.generateFrameNumbers('krampus', { start: 9, end: 11 }),
+            frameRate: 1,
+            repeat: 0
+        });}
+
+    if (!scene.anims.exists('krampus_charge')){
+        scene.anims.create({
+            key: 'krampus_charge',
+            frames: scene.anims.generateFrameNumbers('krampus', { start: 18, end: 20 }),
+            frameRate: 10,
+            repeat: 0
+        });}
+
+    if (!scene.anims.exists('krampus_slam')){
+        scene.anims.create({
+            key: 'krampus_slam',
+            frames: scene.anims.generateFrameNumbers('krampus', { start: 21, end: 23 }),
+            frameRate: 10,
+            repeat: 0
+        });}
+
+    }
+
+    // Idle/erupt states for the Volcano hazard, from the 10x2 volcanosheet
+    // (frames 0-9 eruption, 10-17 idle, 18-19 unused).
+    export function createVolcanoAnimations(scene){
+        if (!scene.anims.exists('volcano_idle')){
+            scene.anims.create({
+                key: 'volcano_idle',
+                frames: scene.anims.generateFrameNumbers('volcano', { start: 10, end: 17 }),
+                frameRate: 6,
+                repeat: -1
+            });}
+
+        if (!scene.anims.exists('volcano_erupt')){
+            scene.anims.create({
+                key: 'volcano_erupt',
+                frames: scene.anims.generateFrameNumbers('volcano', { start: 0, end: 9 }),
+                frameRate: 12,
+                repeat: 0
+            });}
     }
 
     export function createDiscSelectAnimations(scene){
