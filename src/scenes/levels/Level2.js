@@ -1,5 +1,7 @@
 import { GameLogic } from './GameLogic.js';
 import { Demon } from '../../gameobjects/Demon.js';
+import { PrinceIshitsukuri } from '../../gameobjects/PrinceIshitsukuri.js';
+import { PrinceKuramochi } from '../../gameobjects/PrinceKuramochi.js';
 import { createEnemyAnimations } from '../../utils/Animations.js';
 const TILE_SIZE = 32;
 const WORLD_WIDTH = TILE_SIZE * 160;
@@ -55,11 +57,28 @@ export class Level2 extends GameLogic {
         // Volcanos
         // this.addVolcano(27 * TILE_SIZE, GROUND_Y - TILE_SIZE * 2, this.hitEnemy);
         // this.addVolcano(48 * TILE_SIZE, GROUND_Y - TILE_SIZE * 2, this.hitEnemy);
+
+        // Prince bosses (2 of 5 so far, see ART_TODO.md) - placed here just
+        // to test the new art in-level, not final gauntlet placement/order.
+        this.addPrinceIshitsukuri(72, 3);
+        this.addPrinceKuramochi(82, 3);
     }
 
     addDemon(x, y) {
         this.addEnemy(
             new Demon(this, x * TILE_SIZE, GROUND_Y - y * TILE_SIZE)
+        );
+    }
+
+    addPrinceIshitsukuri(x, y) {
+        this.addBoss(
+            new PrinceIshitsukuri(this, x * TILE_SIZE, GROUND_Y - y * TILE_SIZE)
+        );
+    }
+
+    addPrinceKuramochi(x, y) {
+        this.addBoss(
+            new PrinceKuramochi(this, x * TILE_SIZE, GROUND_Y - y * TILE_SIZE)
         );
     }
 

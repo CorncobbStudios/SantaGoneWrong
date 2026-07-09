@@ -59,20 +59,35 @@ export class Preloader extends Phaser.Scene {
             frameHeight: 64
         });
 
+        this.load.spritesheet('allergyboy', '/sprites/allergyboysheet.png', {
+            frameWidth: 64,
+            frameHeight: 64
+        });
+
         this.load.spritesheet('nk', '/sprites/nkspritesheet.png', {
             frameWidth: 64,
             frameHeight: 64
         });
+
+        // Prince bosses (Kaguya rework, see ART_TODO.md) - static portraits
+        // for now, no animation frames yet. Swap to spritesheet() once real
+        // sprite sheets exist.
+        this.load.image('prince1', '/sprites/prince1.png');
+        this.load.image('prince2', '/sprites/prince2.png');
+
         this.load.Animations;
     }
 
     create() {
         this.textures.get('kasey').setFilter(Phaser.Textures.FilterMode.NEAREST);
+        this.textures.get('allergyboy').setFilter(Phaser.Textures.FilterMode.NEAREST);
         this.textures.get('nk').setFilter(Phaser.Textures.FilterMode.NEAREST);
         this.textures.get('demon').setFilter(Phaser.Textures.FilterMode.NEAREST);
         this.textures.get('volcano').setFilter(Phaser.Textures.FilterMode.NEAREST);
         this.textures.get('yeti').setFilter(Phaser.Textures.FilterMode.NEAREST);
         this.textures.get('krampus').setFilter(Phaser.Textures.FilterMode.NEAREST);
+        this.textures.get('prince1').setFilter(Phaser.Textures.FilterMode.NEAREST);
+        this.textures.get('prince2').setFilter(Phaser.Textures.FilterMode.NEAREST);
 
         this.scene.start('MainMenu');
     }

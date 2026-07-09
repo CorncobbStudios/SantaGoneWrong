@@ -1,11 +1,16 @@
 import * as Phaser from 'phaser';
 import { Disc } from './Disc';
+import { getThrowReleaseFrame } from '../utils/Animations';
 
 export class Player extends Phaser.Physics.Arcade.Sprite {
-    // x and y are player starting position
-    constructor(scene, x, y) {
+    // x and y are player starting position; character is the texture/anim
+    // prefix key (e.g. 'kasey', 'allergyboy') chosen on the character select screen
+    constructor(scene, x, y, character = 'kasey') {
         // this is using texture of the sprite
-        super(scene, x, y, 'kasey');
+        super(scene, x, y, character);
+
+        this.character = character;
+        this.throwReleaseFrame = getThrowReleaseFrame(character);
 
         // draws the sprite to the scene
         scene.add.existing(this);
@@ -30,22 +35,26 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         // change to offset collision box
         //this.body.setOffset(15, 0);
 
-        this.play('idle');
+        this.play(this.animKey('idle'));
 
         this.on('animationupdate', (anim, frame) => {
-            if (anim.key === 'throw' && frame.index === 4) {
+            if (anim.key === this.animKey('throw') && frame.index === this.throwReleaseFrame) {
                 const pos = this.getThrowPosition();
                 this.scene.createDisc( pos, this.facing);
             }
         });
 
-        this.on('animationcomplete-throw', (anim) => {
-            if (anim.key === 'throw'){
+        this.on(`animationcomplete-${this.animKey('throw')}`, (anim) => {
+            if (anim.key === this.animKey('throw')){
                 this.anims.stop();
                 this.isAttacking = false;
-                this.play('idle', true);
+                this.play(this.animKey('idle'), true);
             }
         });
+    }
+
+    animKey(name) {
+        return `${this.character}_${name}`;
     }
 
     update(cursors) {
@@ -104,7 +113,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
     }
 
-    playAnimation(key) {
+    playAnimation(name) {
+        const key = this.animKey(name);
         // checks to see if we are already playing the current animation
         if (this.anims.currentAnim?.key === key) {
             return;
@@ -129,7 +139,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         this.isAttacking = true;
         this.attackCooldown = 15;
 
-        this.play('throw', true);
+        this.play(this.animKey('throw'), true);
     }
 
     // Returns true if this hit brought health to 0 or below (i.e. the player died).

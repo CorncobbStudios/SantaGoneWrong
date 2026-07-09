@@ -1,57 +1,47 @@
-export function createPlayerAnimations(scene){
-    if (!scene.anims.exists('idle')){
-        scene.anims.create({
-            key: 'idle',
-            frames: scene.anims.generateFrameNumbers('kasey', {
-                start: 0,
-                end: 5
-            }),
-        frameRate: 6,
-        repeat: -1
-    });}
+// Frame layout differs per character sheet (kasey is a 6x4 grid, allergyboy
+// is an 8x4 grid), so each playable character has its own frame ranges and
+// frame rate. Animation keys are prefixed per character (e.g. 'kasey_idle',
+// 'allergyboy_idle') so both characters' animations can coexist globally,
+// mirroring the per-enemy prefixing already used in createEnemyAnimations.
+// throw.releaseFrame is the animation-local frame index (matching Phaser's
+// `frame.index` in the animationupdate event) at which the character's hand
+// actually opens - this differs per sheet since throw animations don't all
+// have the same frame count, so it can't be a single hardcoded constant.
+const PLAYER_FRAME_LAYOUTS = {
+    kasey: {
+        idle: { start: 0, end: 5, frameRate: 6, repeat: -1 },
+        jump_start: { start: 6, end: 8, frameRate: 6, repeat: 0 },
+        fall: { start: 9, end: 11, frameRate: 1, repeat: 0 },
+        run: { start: 12, end: 17, frameRate: 12, repeat: -1 },
+        throw: { start: 18, end: 23, frameRate: 10, repeat: 0, releaseFrame: 4 },
+    },
+    // Inferred from allergyboysheet.png's row layout (idle/run/jump-fall/throw)
+    // - tweak these ranges if they don't match the intended animation.
+    allergyboy: {
+        idle: { start: 0, end: 7, frameRate: 6, repeat: -1 },
+        run: { start: 8, end: 15, frameRate: 14, repeat: -1 },
+        jump_start: { start: 16, end: 19, frameRate: 8, repeat: 0 },
+        fall: { start: 20, end: 23, frameRate: 2, repeat: 0 },
+        throw: { start: 24, end: 31, frameRate: 20, repeat: 0, releaseFrame: 8 },
+    },
+};
 
-    if (!scene.anims.exists('run')){
-        scene.anims.create({
-            key: 'run',
-            frames: scene.anims.generateFrameNumbers('kasey', {
-                start: 12,
-                end: 17
-            }),
-        frameRate: 12,
-        repeat: -1
-    });}
+export function getThrowReleaseFrame(character) {
+    return PLAYER_FRAME_LAYOUTS[character].throw.releaseFrame;
+}
 
-    if (!scene.anims.exists('jump_start')){
-        scene.anims.create({
-            key: 'jump_start',
-            frames: scene.anims.generateFrameNumbers('kasey', {
-                start: 6,
-                end: 8,
-            }),
-        frameRate: 6,
-        repeat: 0
-    });}
+export function createPlayerAnimations(scene, character = 'kasey'){
+    const layout = PLAYER_FRAME_LAYOUTS[character];
 
-    if (!scene.anims.exists('fall')){
-        scene.anims.create({
-            key: 'fall',
-            frames: scene.anims.generateFrameNumbers('kasey', {
-                start: 9,
-                end: 11,
-            }),
-        frameRate: 1,
-        repeat: 0
-    });}
+    for (const [name, { start, end, frameRate, repeat }] of Object.entries(layout)) {
+        const key = `${character}_${name}`;
+        if (scene.anims.exists(key)) continue;
 
-    if (!scene.anims.exists('throw')){
         scene.anims.create({
-            key: 'throw',
-            frames: scene.anims.generateFrameNumbers('kasey', {
-                start: 18,
-                end: 23,
-            }),
-            frameRate: 10,
-            repeat: 0
+            key,
+            frames: scene.anims.generateFrameNumbers(character, { start, end }),
+            frameRate,
+            repeat
         });
     }
 }

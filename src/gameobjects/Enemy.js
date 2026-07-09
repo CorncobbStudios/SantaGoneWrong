@@ -2,7 +2,8 @@ import * as Phaser from 'phaser';
 
 export class Enemy extends Phaser.Physics.Arcade.Sprite {
     // config: { texture, health, speed, jumpPower, detectionRange, bounce,
-    //           moveDelay, stunDuration, bodySize: {width,height}, bodyOffset: {x,y},
+    //           moveDelay, stunDuration, damageInvulnerabilityDuration,
+    //           bodySize: {width,height}, bodyOffset: {x,y},
     //           animations: { idle, run, jump, fall } }
     constructor(scene, x, y, config) {
         super(scene, x, y, config.texture);
@@ -16,6 +17,12 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
         this.detectionRange = config.detectionRange ?? 500;
         this.moveDelay = config.moveDelay ?? 0;
         this.stunDuration = config.stunDuration ?? 300;
+        // Brief window after being hit during which further takeDamage calls
+        // are ignored - stops a single disc overlap (or standing in contact
+        // damage) that spans a couple of physics steps from applying more
+        // than one hit.
+        this.damageInvulnerable = false;
+        this.damageInvulnerabilityDuration = config.damageInvulnerabilityDuration ?? 200;
         this.animations = config.animations ?? null;
         this.facesLeft = config.facesLeft ?? false;
 
@@ -156,11 +163,15 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     }
 
     takeDamage(amount) {
+        if (this.damageInvulnerable) return;
+
+        this.damageInvulnerable = true;
         this.stun();
         this.health -= amount;
         this.setTint(0xff0000);
-        this.scene.time.delayedCall(200, () => {
+        this.scene.time.delayedCall(this.damageInvulnerabilityDuration, () => {
             if (this.active) this.clearTint();
+            this.damageInvulnerable = false;
         });
         if (this.health <= 0) {
             this.die();

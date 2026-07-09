@@ -376,7 +376,9 @@ export class NegativeKaseyBoss extends Boss {
     }
 
     die() {
+        const scene = this.scene;
         this.discGroup.clear(true, true);
         super.die();
+        scene.scene.start('Victory');
     }
 }

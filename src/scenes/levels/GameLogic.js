@@ -22,11 +22,15 @@ export class GameLogic extends Scene {
         this.tiles = new TileFactory(this);
         this.discs = null;
         this.hud = null;
+        // Set on the registry (not scene data) by CharacterSelect so the
+        // choice survives GameOver's Retry/Level Select, which restart the
+        // level scene without re-passing data.
+        this.character = this.registry.get('character') || 'kasey';
     }
 
     createPlayer(x, y) {
-        createPlayerAnimations(this);
-        this.player = new Player(this, x, y);
+        createPlayerAnimations(this, this.character);
+        this.player = new Player(this, x, y, this.character);
         this.cursors = this.input.keyboard.createCursorKeys();
         this.attackKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
         this.hud = new HUD(this, this.player.maxHealth);

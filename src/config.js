@@ -4,6 +4,7 @@ import { Preloader } from './scenes/Preloader.js';
 import { MainMenu } from './scenes/MainMenu.js';
 import { GameOver } from './scenes/GameOver.js';
 import { Victory } from './scenes/Victory.js';
+import { CharacterSelect } from './scenes/CharacterSelect.js';
 import { LevelSelect } from './scenes/LevelSelect.js';
 import { Level1 } from './scenes/levels/Level1.js';
 import { Level2 } from './scenes/levels/Level2.js';
@@ -34,6 +35,7 @@ export const config = {
         Boot,
         Preloader,
         MainMenu,
+        CharacterSelect,
         LevelSelect,
         Level1,
         Level2,

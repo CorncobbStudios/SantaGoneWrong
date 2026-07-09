@@ -112,7 +112,7 @@ export class MainMenu extends Phaser.Scene {
         switch (this.selected) {
 
         case 0:
-            this.scene.start('LevelSelect');
+            this.scene.start('CharacterSelect');
             break;
 
         case 1:
