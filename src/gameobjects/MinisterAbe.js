@@ -1,16 +1,16 @@
 import { Boss } from './Boss.js';
 
-// Rides the new rotation sheet (see public/sprites/princekuramochi.png) -
+// Rides the new rotation sheet (see public/sprites/ministerabe.png) -
 // 5 static facing angles, no animation frames yet, so this displays frame 0
 // and just chases/contact-damages via the default Enemy behavior. Add the
-// branch-lunge wind-up/release once the full animation sheet from
-// ART_TODO.md lands.
-export class PrinceKuramochi extends Boss {
+// robe-whip fire crack + beat-out-the-flames recovery once the full
+// animation sheet from ART_TODO.md lands.
+export class MinisterAbe extends Boss {
     constructor(scene, x, y) {
         super(scene, x, y, {
-            texture: 'princekuramochi',
+            texture: 'ministerabe',
             health: 10,
-            speed: 130,
+            speed: 120,
             jumpPower: -300,
             detectionRange: 450,
             meleeRange: 80,

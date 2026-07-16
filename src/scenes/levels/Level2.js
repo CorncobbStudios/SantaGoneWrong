@@ -2,6 +2,9 @@ import { GameLogic } from './GameLogic.js';
 import { Demon } from '../../gameobjects/Demon.js';
 import { PrinceIshitsukuri } from '../../gameobjects/PrinceIshitsukuri.js';
 import { PrinceKuramochi } from '../../gameobjects/PrinceKuramochi.js';
+import { MinisterOtomo } from '../../gameobjects/MinisterOtomo.js';
+import { LordIsonokami } from '../../gameobjects/LordIsonokami.js';
+import { MinisterAbe } from '../../gameobjects/MinisterAbe.js';
 import { createEnemyAnimations } from '../../utils/Animations.js';
 const TILE_SIZE = 32;
 const WORLD_WIDTH = TILE_SIZE * 160;
@@ -58,10 +61,14 @@ export class Level2 extends GameLogic {
         // this.addVolcano(27 * TILE_SIZE, GROUND_Y - TILE_SIZE * 2, this.hitEnemy);
         // this.addVolcano(48 * TILE_SIZE, GROUND_Y - TILE_SIZE * 2, this.hitEnemy);
 
-        // Prince bosses (2 of 5 so far, see ART_TODO.md) - placed here just
-        // to test the new art in-level, not final gauntlet placement/order.
+        // Prince/minister bosses (5 of 5 so far, see ART_TODO.md) - placed
+        // here just to test the new art in-level, not final gauntlet
+        // placement/order.
         this.addPrinceIshitsukuri(72, 3);
         this.addPrinceKuramochi(82, 3);
+        this.addMinisterOtomo(92, 3);
+        this.addLordIsonokami(102, 3);
+        this.addMinisterAbe(112, 3);
     }
 
     addDemon(x, y) {
@@ -71,14 +78,35 @@ export class Level2 extends GameLogic {
     }
 
     addPrinceIshitsukuri(x, y) {
-        this.addBoss(
-            new PrinceIshitsukuri(this, x * TILE_SIZE, GROUND_Y - y * TILE_SIZE)
-        );
+        const boss = new PrinceIshitsukuri(this, x * TILE_SIZE, GROUND_Y - y * TILE_SIZE);
+        // Unlike a plain Enemy/Boss, contact alone never hurts the player -
+        // PrinceIshitsukuri does its own distance check against the bowl at
+        // the swing's impact frame (see PrinceIshitsukuri.js), so this is a
+        // no-op instead of the addBoss default (this.handlePlayerHit).
+        this.addBoss(boss, () => {});
     }
 
     addPrinceKuramochi(x, y) {
         this.addBoss(
             new PrinceKuramochi(this, x * TILE_SIZE, GROUND_Y - y * TILE_SIZE)
+        );
+    }
+
+    addMinisterOtomo(x, y) {
+        this.addBoss(
+            new MinisterOtomo(this, x * TILE_SIZE, GROUND_Y - y * TILE_SIZE)
+        );
+    }
+
+    addLordIsonokami(x, y) {
+        this.addBoss(
+            new LordIsonokami(this, x * TILE_SIZE, GROUND_Y - y * TILE_SIZE)
+        );
+    }
+
+    addMinisterAbe(x, y) {
+        this.addBoss(
+            new MinisterAbe(this, x * TILE_SIZE, GROUND_Y - y * TILE_SIZE)
         );
     }
 

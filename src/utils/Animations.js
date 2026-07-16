@@ -241,6 +241,46 @@ export function createEnemyAnimations(scene){
             repeat: 0
         });}
 
+    // Prince Ishitsukuri's rotation sheet grew into a real 8x3 frame grid:
+    // row 1 idle, row 2 the overhead-bowl-smash attack (windup/release/
+    // recovery all in one clip), row 3 run.
+    if (!scene.anims.exists('ishitsukuri_idle')){
+        scene.anims.create({
+            key: 'ishitsukuri_idle',
+            frames: scene.anims.generateFrameNumbers('princeishitsukuri', { start: 0, end: 7 }),
+            frameRate: 6,
+            repeat: -1
+        });}
+
+    // Per-frame durations (instead of a flat frameRate) so the swing reads
+    // as an actual attack: linger at the raise/peak (frames 11-12), snap
+    // fast into the downswing (frame 13), then hold on impact (frame 14)
+    // long enough to register before the recovery frame plays.
+    if (!scene.anims.exists('ishitsukuri_attack')){
+        scene.anims.create({
+            key: 'ishitsukuri_attack',
+            frames: [
+                { key: 'princeishitsukuri', frame: 8 },
+                { key: 'princeishitsukuri', frame: 9 },
+                { key: 'princeishitsukuri', frame: 10 },
+                { key: 'princeishitsukuri', frame: 11, duration: 220 },
+                { key: 'princeishitsukuri', frame: 12, duration: 220 },
+                { key: 'princeishitsukuri', frame: 13, duration: 60 },
+                { key: 'princeishitsukuri', frame: 14, duration: 260 },
+                { key: 'princeishitsukuri', frame: 15 },
+            ],
+            frameRate: 6,
+            repeat: 0
+        });}
+
+    if (!scene.anims.exists('ishitsukuri_run')){
+        scene.anims.create({
+            key: 'ishitsukuri_run',
+            frames: scene.anims.generateFrameNumbers('princeishitsukuri', { start: 16, end: 23 }),
+            frameRate: 12,
+            repeat: -1
+        });}
+
     }
 
     // Idle/erupt states for the Volcano hazard, from the 10x2 volcanosheet

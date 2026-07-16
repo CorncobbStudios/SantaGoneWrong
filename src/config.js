@@ -9,6 +9,7 @@ import { LevelSelect } from './scenes/LevelSelect.js';
 import { Level1 } from './scenes/levels/Level1.js';
 import { Level2 } from './scenes/levels/Level2.js';
 import { Level3 } from './scenes/levels/Level3.js';
+import { BossTest } from './scenes/levels/BossTest.js';
 import * as Phaser from 'phaser';
 
 export const config = {
@@ -40,6 +41,7 @@ export const config = {
         Level1,
         Level2,
         Level3,
+        BossTest,
         GameOver,
         Victory
     ]

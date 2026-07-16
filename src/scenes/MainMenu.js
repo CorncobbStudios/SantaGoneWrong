@@ -21,6 +21,7 @@ export class MainMenu extends Phaser.Scene {
             'START',
             'LOAD',
             'CONFIG',
+            'BOSS TEST',
             'QUIT'
         ];
 
@@ -124,6 +125,10 @@ export class MainMenu extends Phaser.Scene {
             break;
 
         case 3:
+            this.scene.start('BossTest');
+            break;
+
+        case 4:
             this.game.destroy(true);
             break;
         }

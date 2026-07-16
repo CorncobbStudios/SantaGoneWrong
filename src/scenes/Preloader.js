@@ -19,6 +19,7 @@ export class Preloader extends Phaser.Scene {
         this.load.image('star', '/objects/star.png');
         this.load.image('magmaball', '/objects/magmaball.png');
         this.load.image('disc', '/objects/discObject.png');
+        this.load.image('buddhabowl', '/objects/buddhabowl.png');
         this.load.image('mainmenu', '/assets/mainmenu.png');
 
         // 10x2 grid of 64x64 frames: 0-9 eruption, 10-17 idle, 18-19 empty.
@@ -69,11 +70,30 @@ export class Preloader extends Phaser.Scene {
             frameHeight: 64
         });
 
-        // Prince bosses (Kaguya rework, see ART_TODO.md) - static portraits
-        // for now, no animation frames yet. Swap to spritesheet() once real
-        // sprite sheets exist.
-        this.load.image('prince1', '/sprites/prince1.png');
-        this.load.image('prince2', '/sprites/prince2.png');
+        // Prince bosses (Kaguya rework, see ART_TODO.md) - rotation sheets
+        // (5 static facing angles, no animation frames yet). Frame 0 is used
+        // as the display frame until the full 24-frame idle/run/attack sheets
+        // from ART_TODO.md land.
+        this.load.spritesheet('princeishitsukuri', '/sprites/princeishitsukuri.png', {
+            frameWidth: 128,
+            frameHeight: 128
+        });
+        this.load.spritesheet('princekuramochi', '/sprites/princekuramochi.png', {
+            frameWidth: 128,
+            frameHeight: 128
+        });
+        this.load.spritesheet('ministerotomo', '/sprites/ministerotomo.png', {
+            frameWidth: 128,
+            frameHeight: 128
+        });
+        this.load.spritesheet('lordisonokami', '/sprites/lordisonokami.png', {
+            frameWidth: 128,
+            frameHeight: 128
+        });
+        this.load.spritesheet('ministerabe', '/sprites/ministerabe.png', {
+            frameWidth: 128,
+            frameHeight: 128
+        });
 
         this.load.Animations;
     }
@@ -86,8 +106,11 @@ export class Preloader extends Phaser.Scene {
         this.textures.get('volcano').setFilter(Phaser.Textures.FilterMode.NEAREST);
         this.textures.get('yeti').setFilter(Phaser.Textures.FilterMode.NEAREST);
         this.textures.get('krampus').setFilter(Phaser.Textures.FilterMode.NEAREST);
-        this.textures.get('prince1').setFilter(Phaser.Textures.FilterMode.NEAREST);
-        this.textures.get('prince2').setFilter(Phaser.Textures.FilterMode.NEAREST);
+        this.textures.get('princeishitsukuri').setFilter(Phaser.Textures.FilterMode.NEAREST);
+        this.textures.get('princekuramochi').setFilter(Phaser.Textures.FilterMode.NEAREST);
+        this.textures.get('ministerotomo').setFilter(Phaser.Textures.FilterMode.NEAREST);
+        this.textures.get('lordisonokami').setFilter(Phaser.Textures.FilterMode.NEAREST);
+        this.textures.get('ministerabe').setFilter(Phaser.Textures.FilterMode.NEAREST);
 
         this.scene.start('MainMenu');
     }
