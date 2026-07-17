@@ -4,17 +4,25 @@ import { Boss } from './Boss.js';
 // Hand offset (relative to the boss's own x/y, before facing flip) for the
 // fake stone bowl during the ishitsukuri_attack clip, indexed by the
 // animation's local frame index (0-7) - eyeballed against the sheet's
-// raise/overhead/smash-down poses. null hides the bowl (calm start and
-// recovery, where his hands are back down at his sides).
+// raise/overhead poses (frames 2-5, unchanged from the original attack art)
+// and the redrawn spin-finish release (frames 6-7 - he now swings the bowl
+// out to the side in his lead hand rather than smashing straight down, so
+// this is a wide horizontal offset instead of a low/close one). Frame 7
+// still has his sleeves flared out mid-motion in the art (not a calm
+// recovery pose), so it keeps a real offset instead of null - hiding it
+// there made the bowl vanish while he still visually looked mid-swing. Its
+// offset stays out near frame 6's rather than snapping back toward center,
+// since he hasn't actually pulled the bowl back in yet at this point.
+// null hides the bowl only at the true calm start (frames 0-1).
 const BOWL_OFFSETS = [
     null,
-    null,
-    { x: 14, y: -16 },
-    { x: 8, y: -24 },
-    { x: 2, y: -42 },
-    { x: 4, y: -38 },
-    { x: 26, y: 46 },
-    null,
+    { x: 14, y: -1 },
+    { x: 8, y: -8 },
+    { x: 2, y: -27 },
+    { x: 0, y: -30 },
+    { x: 0, y: -35 },
+    { x: 16, y: -30 },
+    { x: 16, y: -30 }
 ];
 
 // Rotation (radians), before facing flip - derived from BOWL_OFFSETS
@@ -38,7 +46,8 @@ const BOWL_ROTATIONS = computeBowlRotations(BOWL_OFFSETS);
 
 // Local frame index (within ishitsukuri_attack) where the bowl actually
 // lands - matches the BOWL_OFFSETS entry where it's down at impact height.
-const IMPACT_FRAME = 6;
+const IMPACT_FRAME = 7;
+
 // How close the player needs to be to the bowl's position (not the boss's
 // body) at IMPACT_FRAME to actually get hit.
 const IMPACT_RANGE = 55;
@@ -47,16 +56,18 @@ const IMPACT_RANGE = 55;
 const IMPACT_LUNGE = 6;
 
 // Rides the real idle/run/attack animations (see public/sprites/
-// princeishitsukuri.png and Animations.js). Chases until in melee range,
-// then plays the overhead bowl-smash clip. Unlike other Enemy/Boss types,
-// merely touching him is harmless (the level passes addBoss a no-op
-// onPlayerHit, see Level2.js/BossTest.js) - damage instead comes from a
-// one-shot distance check against the bowl's own position at IMPACT_FRAME,
-// since the boss's body hitbox alone can't represent a swing that reaches
-// out past him. The bowl itself was drawn as its own relic icon
-// (public/objects/buddhabowl.png), not baked into his frames - so a
-// separate `bowl` sprite is puppeted into his hands frame-by-frame via
-// BOWL_OFFSETS, mirroring how Player.js frame-syncs the disc throw.
+// princeishitsukuri.png and Animations.js - his sheet is an 8x4 grid: idle,
+// run, this attack, and a second attack in row 4 that isn't wired up to
+// trigger yet). Chases until in melee range, then plays the bowl-swing
+// clip. Unlike other Enemy/Boss types, merely touching him is harmless (the
+// level passes addBoss a no-op onPlayerHit, see Level2.js/BossTest.js) -
+// damage instead comes from a one-shot distance check against the bowl's
+// own position at IMPACT_FRAME, since the boss's body hitbox alone can't
+// represent a swing that reaches out past him. The bowl itself was drawn as
+// its own relic icon (public/objects/buddhabowl.png), not baked into his
+// frames - so a separate `bowl` sprite is puppeted into his hands
+// frame-by-frame via BOWL_OFFSETS, mirroring how Player.js frame-syncs the
+// disc throw.
 export class PrinceIshitsukuri extends Boss {
     constructor(scene, x, y) {
         super(scene, x, y, {
@@ -79,17 +90,28 @@ export class PrinceIshitsukuri extends Boss {
                 idle: 'ishitsukuri_idle',
                 run: 'ishitsukuri_run',
                 attack: 'ishitsukuri_attack',
+                // Row 4's alternate attack - defined so the clip is ready
+                // to use, but nothing triggers it yet (still deciding how/
+                // when it should fire relative to the main bowl-smash).
+                attack2: 'ishitsukuri_attack2',
             },
         });
 
         this.isAttacking = false;
 
         this.bowl = scene.add.sprite(x, y, 'buddhabowl');
-        // Pivot on the bowl's base (checked buddhabowl.png: its content sits
-        // at roughly y:7-26 of the 32px canvas, so the base is ~81% down),
-        // not its center - so it rotates like it's resting in his hands
-        // (base stays put, rim/top tips), instead of spinning in place.
-        this.bowl.setOrigin(0.5, 0.81);
+        // buddhabowl.png is a plain 32x32 icon - too small next to a
+        // 128x128-frame character, so it's scaled up to actually read as a
+        // held prop rather than a tiny dot in his hand.
+        this.bowl.setScale(1.5);
+        // Single center pivot for the whole clip - switching between a
+        // base pivot (for the raise) and a rim pivot (for the swing/
+        // impact) caused a visible jump in the bowl's rendered position
+        // right at the switch frame (the two pivots extend the sprite in
+        // opposite directions from the anchor), independent of how well
+        // BOWL_OFFSETS was tuned. Center is a compromise: no jump, but also
+        // no "base leads the smash" effect.
+        this.bowl.setOrigin(0.5, 0.5);
         this.bowl.setVisible(false);
 
         this.on('animationupdate', (anim, frame) => {
@@ -119,14 +141,11 @@ export class PrinceIshitsukuri extends Boss {
 
         const facing = this.flipX ? -1 : 1;
         this.bowl.setPosition(this.x + offset.x * facing, this.y + offset.y);
-        // Mirroring a sprite horizontally flips the sense of its rotation
-        // too (a clockwise lean, viewed in a mirror, reads as counter-
-        // clockwise) - BOWL_ROTATIONS is tuned against his base/unflipped
-        // frames (leaning away from his reach on the raise, diving into it
-        // on the swing down), so this needs the same facing flip as the
-        // position offset to stay consistent once he's mirrored to face
-        // the other way.
-        this.bowl.setRotation((BOWL_ROTATIONS[frameIndex] ?? 0) * facing);
+
+        // Rotation disabled for now to isolate position tuning - uncomment
+        // to bring back the derived tilt.
+        // const rotation = BOWL_ROTATIONS[frameIndex] ?? 0;
+        // this.bowl.setRotation(rotation * facing);
         this.bowl.setVisible(true);
     }
 

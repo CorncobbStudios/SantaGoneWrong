@@ -241,9 +241,11 @@ export function createEnemyAnimations(scene){
             repeat: 0
         });}
 
-    // Prince Ishitsukuri's rotation sheet grew into a real 8x3 frame grid:
-    // row 1 idle, row 2 the overhead-bowl-smash attack (windup/release/
-    // recovery all in one clip), row 3 run.
+    // Prince Ishitsukuri's rotation sheet grew into an 8x4 frame grid:
+    // row 1 idle, row 2 run, row 3 the overhead-bowl-smash attack (windup/
+    // release/recovery all in one clip - the release frames were redrawn
+    // into a spin/leap finish, see PrinceIshitsukuri.js for the retuned
+    // bowl offsets), row 4 a second attack (not wired up to trigger yet).
     if (!scene.anims.exists('ishitsukuri_idle')){
         scene.anims.create({
             key: 'ishitsukuri_idle',
@@ -252,33 +254,43 @@ export function createEnemyAnimations(scene){
             repeat: -1
         });}
 
+    if (!scene.anims.exists('ishitsukuri_run')){
+        scene.anims.create({
+            key: 'ishitsukuri_run',
+            frames: scene.anims.generateFrameNumbers('princeishitsukuri', { start: 8, end: 15 }),
+            frameRate: 12,
+            repeat: -1
+        });}
+
     // Per-frame durations (instead of a flat frameRate) so the swing reads
-    // as an actual attack: linger at the raise/peak (frames 11-12), snap
-    // fast into the downswing (frame 13), then hold on impact (frame 14)
+    // as an actual attack: linger at the raise/peak (frames 19-20), snap
+    // fast into the release (frame 21), then hold on impact (frame 22)
     // long enough to register before the recovery frame plays.
     if (!scene.anims.exists('ishitsukuri_attack')){
         scene.anims.create({
             key: 'ishitsukuri_attack',
             frames: [
-                { key: 'princeishitsukuri', frame: 8 },
-                { key: 'princeishitsukuri', frame: 9 },
-                { key: 'princeishitsukuri', frame: 10 },
-                { key: 'princeishitsukuri', frame: 11, duration: 220 },
-                { key: 'princeishitsukuri', frame: 12, duration: 220 },
-                { key: 'princeishitsukuri', frame: 13, duration: 60 },
-                { key: 'princeishitsukuri', frame: 14, duration: 260 },
-                { key: 'princeishitsukuri', frame: 15 },
+                { key: 'princeishitsukuri', frame: 16 },
+                { key: 'princeishitsukuri', frame: 17 },
+                { key: 'princeishitsukuri', frame: 18 },
+                { key: 'princeishitsukuri', frame: 19 },
+                { key: 'princeishitsukuri', frame: 20 },
+                { key: 'princeishitsukuri', frame: 21 },
+                { key: 'princeishitsukuri', frame: 22  },
+                { key: 'princeishitsukuri', frame: 23 },
             ],
-            frameRate: 6,
+            frameRate: 1,
             repeat: 0
         });}
 
-    if (!scene.anims.exists('ishitsukuri_run')){
+    // Row 4's alternate attack - animation only, nothing triggers this yet
+    // (see PrinceIshitsukuri.js).
+    if (!scene.anims.exists('ishitsukuri_attack2')){
         scene.anims.create({
-            key: 'ishitsukuri_run',
-            frames: scene.anims.generateFrameNumbers('princeishitsukuri', { start: 16, end: 23 }),
-            frameRate: 12,
-            repeat: -1
+            key: 'ishitsukuri_attack2',
+            frames: scene.anims.generateFrameNumbers('princeishitsukuri', { start: 24, end: 31 }),
+            frameRate: 8,
+            repeat: 0
         });}
 
     }
